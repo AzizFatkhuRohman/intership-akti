@@ -28,16 +28,16 @@ class ReportA3 extends Model
     public function ShowMentor()
     {
         $mentor_id = Mentor::where('user_id', Auth::user()->id)->value('id');
-        return $this->where('mentor_id', $mentor_id)->latest()->paginate(20);
+        return $this->where('mentor_id', $mentor_id)->latest()->paginate(10);
     }
     public function ShowSection()
     {
         $section_id = Section::where('user_id', Auth::user()->id)->value('id');
-        return $this->where('section_id', $section_id)->latest()->paginate(20);
+        return $this->where('section_id', $section_id)->latest()->paginate(10);
     }
     public function ShowDepartement()
     {
         $departement_id = Departement::where('user_id', Auth::user()->id)->value('id');
-        return $this->where('departement_id', $departement_id)->latest()->paginate(20);
+        return $this->where('departement_id', $departement_id)->latest()->paginate(10);
     }
 }

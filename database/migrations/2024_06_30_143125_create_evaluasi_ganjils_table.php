@@ -198,6 +198,7 @@ return new class extends Migration
             $table->integer('tji_1');
             $table->integer('tji_2');
             $table->integer('total_point');
+            $table->enum('status',['pending','accept','reject'])->default('pending');
             $table->timestamps();
         });
     }

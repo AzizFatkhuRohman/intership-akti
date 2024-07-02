@@ -28,10 +28,20 @@ class EvaluasiGanjil extends Model
     public function Show(){
         if (Auth::user()->role == 'mentor') {
             $mentor_id = Mentor::where('user_id',Auth::user()->id)->value('id');
-            return $this->where('mentor_id',$mentor_id)->latest()->paginate(20);
-        } else {
-            # code...
+            return $this->with('mahasiswa','section','departement')->where('mentor_id',$mentor_id)->latest()->paginate(10);
+        } elseif(Auth::user()->role == 'section') {
+            $section_id = Section::where('user_id',Auth::user()->id)->value('id');
+            return $this->with('mahasiswa','mentor','departement')->where('section_id',$section_id)->latest()->paginate(10);
+        } elseif(Auth::user()->role == 'mahasiswa'){
+            $mahasiswa_id = Mahasiswa::where('user_id',Auth::user()->id)->value('id');
+            return $this->with('mentor','section','departement')->where('mahasiswa_id',$mahasiswa_id)->latest()->paginate(10);
         }
         
+    }
+    public function Store($data){
+        return $this->create($data);
+    }
+    public function Edit($id,$data){
+        return $this->find($id)->update($data);
     }
 }

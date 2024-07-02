@@ -65,7 +65,7 @@ class User extends Authenticatable
     }
     public function ShowAdmin()
     {
-        return $this->latest()->paginate(20);
+        return $this->latest()->paginate(10);
     }
     public function ShowMahasiswa()
     {
@@ -75,7 +75,7 @@ class User extends Authenticatable
             ->orWhere('role', 'dosen')
             ->orWhere('role', 'departement')
             ->latest()
-            ->paginate(20);
+            ->paginate(10);
     }
     public function lupaPassword($nomor_induk, $data){
         return $this->where('nomor_induk',$nomor_induk)->update($data);

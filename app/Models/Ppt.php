@@ -23,7 +23,7 @@ class Ppt extends Model
     }
     public function ShowDepartement(){
         $departement_id = Departement::where('user_id',Auth::user()->id)->value('id');
-        return $this->where('departement_id',$departement_id)->latest()->paginate(20);
+        return $this->where('departement_id',$departement_id)->latest()->paginate(10);
     }
     public function Store($data)
     {

@@ -89,6 +89,8 @@ Route::middleware('auth')->group(function () {
             });
             Route::prefix('logbook')->group(function () {
                 Route::resource('mingguan', LogbookMingguanController::class);
+                Route::resource('bulanan-ganjil',EvaluasiGanjilController::class);
+                Route::resource('bulanan-genap',EvaluasiGenapController::class);
                 Route::resource('triwulan', TriwulanGanjilController::class);
             });
             Route::prefix('report')->group(function () {
@@ -136,7 +138,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('data', MahasiswaController::class);
             Route::prefix('logbook')->group(function () {
                 Route::resource('mingguan', LogbookMingguanController::class);
-                Route::get('bulanan-ganjil',[TriwulanGanjilController::class,'test']);
+                Route::resource('bulanan-ganjil',EvaluasiGanjilController::class);
                 Route::resource('triwulan', TriwulanGanjilController::class);
             });
             Route::prefix('report')->group(function () {

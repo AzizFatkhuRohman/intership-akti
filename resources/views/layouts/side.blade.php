@@ -133,7 +133,7 @@
                     <!--//nav-item-->
                     <li class="nav-item has-submenu">
                         <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                        <a class="nav-link submenu-toggle {{ $title == 'Logbook Mingguan' || $title == 'Triwulan' ? 'active' : '' }}"
+                        <a class="nav-link submenu-toggle {{ $title == 'Logbook Mingguan' || $title == 'Triwulan' || $title == 'Evaluasi Bulanan Ganjil' || $title == 'Evaluasi Bulanan Genap' ? 'active' : '' }}"
                             href="#" data-bs-toggle="collapse" data-bs-target="#submenu-1" aria-expanded="false"
                             aria-controls="submenu-1">
                             <span class="nav-icon">
@@ -162,9 +162,9 @@
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Logbook Mingguan' ? 'active' : '' }}"
                                         href="{{url('mahasiswa/logbook/mingguan')}}">Mingguan</a></li>
-                                <li class="submenu-item"><a class="submenu-link"
+                                <li class="submenu-item"><a class="submenu-link {{ $title == 'Evaluasi Bulanan Ganjil' ? 'active' : '' }}"
                                         href="{{url('mahasiswa/logbook/bulanan-ganjil')}}">Bulanan Ganjil</a></li>
-                                <li class="submenu-item"><a class="submenu-link"
+                                <li class="submenu-item"><a class="submenu-link {{ $title == 'Evaluasi Bulanan Genap' ? 'active' : '' }}"
                                         href="{{url('mahasiswa/logbook/bulanan-genap')}}">Bulanan Genap</a></li>
                                 <li class="submenu-item"><a class="submenu-link"
                                         href="{{url('mahasiswa/logbook/triwulan')}}">Triwulan</a></li>
@@ -470,7 +470,7 @@
                     </li>
                     <li class="nav-item has-submenu">
                         <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                        <a class="nav-link submenu-toggle {{ $title == 'Logbook Mingguan' || $title == 'Logbook Bulanan' || $title == 'Triwulan' ? 'active' : '' }}"
+                        <a class="nav-link submenu-toggle {{ $title == 'Logbook Mingguan' || $title == 'Evaluasi Bulanan Ganjil' || $title == 'Evaluasi Bulanan Genap' || $title == 'Triwulan' ? 'active' : '' }}"
                             href="#" data-bs-toggle="collapse" data-bs-target="#sublogbook" aria-expanded="false"
                             aria-controls="sublogbook">
                             <span class="nav-icon">
@@ -500,10 +500,10 @@
                                         class="submenu-link {{ $title == 'Logbook Mingguan' ? 'active' : '' }}"
                                         href="{{url('mentor/logbook/mingguan')}}">Mingguan</a></li>
                                 <li class="submenu-item"><a
-                                        class="submenu-link {{ $title == 'Logbook Bulanan' ? 'active' : '' }}"
+                                        class="submenu-link {{ $title == 'Evaluasi Bulanan Ganjil' ? 'active' : '' }}"
                                         href="{{url('mentor/logbook/bulanan-ganjil')}}">Bulanan Ganjil</a></li>
                                 <li class="submenu-item"><a
-                                        class="submenu-link {{ $title == 'Logbook Bulanan' ? 'active' : '' }}"
+                                        class="submenu-link {{ $title == 'Evaluasi Bulanan Genap' ? 'active' : '' }}"
                                         href="{{url('mentor/logbook/bulanan-genap')}}">Bulanan Genap</a></li>
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Triwulan' ? 'active' : '' }}"
@@ -626,7 +626,7 @@
                     </li>
                     <li class="nav-item has-submenu">
                         <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                        <a class="nav-link submenu-toggle {{ $title == 'Logbook Mingguan' || $title == 'Logbook Bulanan' || $title == 'Triwulan' ? 'active' : '' }}"
+                        <a class="nav-link submenu-toggle {{ $title == 'Logbook Mingguan' || $title == 'Evaluasi Bulanan Ganjil' || $title == 'Evaluasi Bulanan Genap' || $title == 'Triwulan' ? 'active' : '' }}"
                             href="#" data-bs-toggle="collapse" data-bs-target="#sublogbook" aria-expanded="false"
                             aria-controls="sublogbook">
                             <span class="nav-icon">
@@ -656,8 +656,11 @@
                                         class="submenu-link {{ $title == 'Logbook Mingguan' ? 'active' : '' }}"
                                         href="{{url('section/logbook/mingguan')}}">Mingguan</a></li>
                                 <li class="submenu-item"><a
-                                        class="submenu-link {{ $title == 'Logbook Bulanan' ? 'active' : '' }}"
-                                        href="{{url('section/logbook/bulanan')}}">Bulanan</a></li>
+                                        class="submenu-link {{ $title == 'Evaluasi Bulanan Ganjil' ? 'active' : '' }}"
+                                        href="{{url('section/logbook/bulanan-ganjil')}}">Bulanan Ganjil</a></li>
+                                        <li class="submenu-item"><a
+                                            class="submenu-link {{ $title == 'Evaluasi Bulanan Genap' ? 'active' : '' }}"
+                                            href="{{url('section/logbook/bulanan-genap')}}">Bulanan Genap</a></li>
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Triwulan' ? 'active' : '' }}"
                                         href="{{url('section/logbook/triwulan')}}">Triwulan</a></li>

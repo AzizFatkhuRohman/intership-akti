@@ -37,7 +37,7 @@ class PindahMentor extends Model
         return $this->with('mentor','section','departement')->where('mahasiswa_id',$mahasiswa_id)->latest()->paginate(20);
     }
     public function ShowAdmin(){
-        return $this->with('mentor','section','departement')->latest()->paginate(20);
+        return $this->with('mentor','section','departement')->latest()->paginate(10);
     }
     public function Hapus($id){
         return $this->find($id)->delete();

@@ -37,7 +37,7 @@ class Departement extends Model
     }
     public function ShowAdmin()
     {
-        return $this->latest()->paginate(20);
+        return $this->latest()->paginate(10);
     }
     public function Store($data)
     {
