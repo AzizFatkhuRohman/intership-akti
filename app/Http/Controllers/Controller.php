@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\Departement;
 use App\Models\Dosen;
 use App\Models\LogbookMingguan;
 use App\Models\Mahasiswa;
@@ -185,12 +186,139 @@ class Controller extends BaseController
     public function section()
     {
         $title = 'Dashboard';
-        return view('section.index', compact('title'));
+        $section_id = Section::where('user_id',Auth::user()->id)->value('id');
+        $mahasiswa = Mahasiswa::where('section_id',$section_id)->count();
+        $logbook = LogbookMingguan::where('section_id',$section_id)->count();
+        $absensi = Absensi::where('section_id', $section_id)->count();
+            $logbook = LogbookMingguan::where('section_id', $section_id)->count();
+            $janabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id) // Ubah $section_id sesuai dengan pengambilan data mahasiswa Anda
+                ->whereMonth('created_at', 1)
+                ->count();
+
+            $febabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 2)
+                ->count();
+
+            $marabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 3)
+                ->count();
+
+            $aprabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 4)
+                ->count();
+
+            $meiabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 5)
+                ->count();
+
+            $junabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 6)
+                ->count();
+
+            $julabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 7)
+                ->count();
+
+            $agusabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 8)
+                ->count();
+
+            $sepabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 9)
+                ->count();
+
+            $oktabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 10)
+                ->count();
+
+            $novabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 11)
+                ->count();
+
+            $desabs = Absensi::where('keterangan', 'masuk')
+                ->where('section_id', $section_id)
+                ->whereMonth('created_at', 12)
+                ->count();
+        return view('section.index', compact('title','mahasiswa','absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs'));
     }
     public function departement(){
-        return view('departement.index',[
-            'title'=>'Dashboard'
-        ]);
+        $title = 'Dashboard';
+        $departement_id = Departement::where('user_id',Auth::user()->id)->value('id');
+        $mahasiswa = Mahasiswa::where('departement_id',$departement_id)->count();
+        $logbook = LogbookMingguan::where('departement_id',$departement_id)->count();
+        $absensi = Absensi::where('departement_id', $departement_id)->count();
+            $logbook = LogbookMingguan::where('departement_id', $departement_id)->count();
+            $janabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id) // Ubah $departement_id sesuai dengan pengambilan data mahasiswa Anda
+                ->whereMonth('created_at', 1)
+                ->count();
+
+            $febabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 2)
+                ->count();
+
+            $marabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 3)
+                ->count();
+
+            $aprabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 4)
+                ->count();
+
+            $meiabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 5)
+                ->count();
+
+            $junabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 6)
+                ->count();
+
+            $julabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 7)
+                ->count();
+
+            $agusabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 8)
+                ->count();
+
+            $sepabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 9)
+                ->count();
+
+            $oktabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 10)
+                ->count();
+
+            $novabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 11)
+                ->count();
+
+            $desabs = Absensi::where('keterangan', 'masuk')
+                ->where('departement_id', $departement_id)
+                ->whereMonth('created_at', 12)
+                ->count();
+        return view('departement.index', compact('title','mahasiswa','absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs'));
     }
     public function profil($id)
     {
@@ -222,7 +350,7 @@ class Controller extends BaseController
             $this->mahasiswa->Store([
                 'user_id' => Auth::user()->id,
                 'dosen_id' => $request->dosen_id,
-                'mentor_id' => $request->mentor_id,
+                'section_id' => $request->mentor_id,
                 'no_reg' => $request->no_reg,
                 'batch' => $request->batch,
                 'shift' => $request->shift

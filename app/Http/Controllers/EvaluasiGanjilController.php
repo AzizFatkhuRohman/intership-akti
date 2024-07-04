@@ -34,6 +34,11 @@ class EvaluasiGanjilController extends Controller
                 'title'=>$title,
                 'data'=>$this->evaluasiGanjil->Show()
             ]);
+        } elseif(Auth::user()->role == 'departement'){
+            return view('departement.logbook.bulanan-ganjil',[
+                'title'=>$title,
+                'data'=>$this->evaluasiGanjil->Show()
+            ]);
         }
         
     }

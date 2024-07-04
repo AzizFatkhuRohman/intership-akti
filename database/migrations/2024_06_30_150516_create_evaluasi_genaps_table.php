@@ -107,6 +107,7 @@ return new class extends Migration
 
             $table->integer('inisiatif_1');
             $table->integer('inisiatif_2');
+            $table->integer('inisiatif_3');
 
             $table->integer('disiplin_1');
             $table->integer('disiplin_2');
@@ -134,6 +135,7 @@ return new class extends Migration
             $table->integer('gcrc_1');
             $table->integer('gcrc_2');
             $table->integer('total_point');
+            $table->enum('status',['pending','accept','reject'])->default('pending');
             $table->timestamps();
         });
     }

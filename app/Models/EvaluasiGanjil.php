@@ -35,6 +35,9 @@ class EvaluasiGanjil extends Model
         } elseif(Auth::user()->role == 'mahasiswa'){
             $mahasiswa_id = Mahasiswa::where('user_id',Auth::user()->id)->value('id');
             return $this->with('mentor','section','departement')->where('mahasiswa_id',$mahasiswa_id)->latest()->paginate(10);
+        } elseif(Auth::user()->role == 'departement'){
+            $departement_id = Departement::where('user_id',Auth::user()->id)->value('id');
+            return $this->with('mahasiswa','mentor','section')->where('departement_id',$departement_id)->latest()->paginate(10);
         }
         
     }
