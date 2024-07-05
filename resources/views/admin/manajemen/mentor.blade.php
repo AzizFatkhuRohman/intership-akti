@@ -29,7 +29,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <label for="exampleFormControlInput1" class="form-label">Pengguna</label>
-                                        <select class="form-select" aria-label="Default select example" name="user_id">
+                                        <select class="select" aria-label="Default select example" name="user_id">
+                                            <option value=""></option>
                                             @foreach ($user as $user)
                                             <option value="{{$user->id}}">{{$user->nama}}</option>
                                             @endforeach
@@ -67,8 +68,9 @@
                                     </div>
                                     <div class="col-6">
                                         <label for="exampleFormControlInput1" class="form-label">Section</label>
-                                        <select class="form-select" aria-label="Default select example"
+                                        <select class="select" aria-label="Default select example"
                                             name="section_id">
+                                            <option value=""></option>
                                             @foreach ($sectionData as $section)
                                             <option value="{{$section->id}}">
                                                 {{$section->user->nama}}/{{$section->nama_section}}
@@ -167,7 +169,7 @@
                                                         </div>
                                                         <div class="col-6">
                                                             <label for="exampleFormControlInput1" class="form-label">Section</label>
-                                                            <select class="form-select" aria-label="Default select example"
+                                                            <select class="select" aria-label="Default select example"
                                                                 name="section_id">
                                                                 <option value="{{$item->section_id}}">{{$item->section->user->nama}}/{{$item->section->nama_section}}</option>
                                                                 @foreach ($sectionData as $sec)
@@ -176,11 +178,6 @@
                                                                 </option>
                                                                 @endforeach
                                                             </select>
-                                                        </div>
-                                                        <div class="">
-                                                            <label for="exampleFormControlInput1" class="form-label">Departement</label>
-                                                            <input type="text" class="form-control" id="exampleFormControlInput1"
-                                                                name="departement" value="{{$item->departement->user->nama}}/{{$item->departement->nama_departement}}/{{$item->departement->lokasi}}" readonly>
                                                         </div>
                                                     </div>
                     

@@ -29,7 +29,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <label for="exampleFormControlInput1" class="form-label">Pengguna</label>
-                                        <select class="form-select" aria-label="Default select example" name="user_id">
+                                        <select class="select" aria-label="Default select example" name="user_id">
+                                            <option value=""></option>
                                             @foreach ($user as $user)
                                             <option value="{{$user->id}}">{{$user->nama}}</option>
                                             @endforeach
@@ -43,8 +44,9 @@
                                     </div>
                                     <div class="">
                                         <label for="exampleFormControlInput1" class="form-label">Departement</label>
-                                        <select class="form-select" aria-label="Default select example"
+                                        <select class="select" aria-label="Default select example"
                                             name="departement_id">
+                                            <option value=""></option>
                                             @foreach ($departementData as $departementData)
                                             <option value="{{$departementData->id}}">
                                                 {{$departementData->user->nama}}/{{$departementData->nama_departement}}/{{$departementData->lokasi}}
@@ -128,7 +130,7 @@
                                                         {{-- <div class="">
                                                             <label for="exampleFormControlInput1"
                                                                 class="form-label">Departement</label>
-                                                            <select class="form-select"
+                                                            <select class="select"
                                                                 aria-label="Default select example"
                                                                 name="departement_id">
                                                                 @foreach ($departementData as $departementData)

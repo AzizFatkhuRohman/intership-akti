@@ -31,7 +31,11 @@ class Controller extends BaseController
     public function admin()
     {
         $title = 'Dashboard';
-        return view('admin.index', compact('title'));
+        $mahasiswa = Mahasiswa::count();
+        $mentor = Mentor::count();
+        $section = Section::count();
+        $departement = Departement::count();
+        return view('admin.index', compact('title','mahasiswa','mentor','section','departement'));
     }
     public function mahasiswa()
     {
