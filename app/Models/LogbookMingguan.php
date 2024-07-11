@@ -16,6 +16,18 @@ class LogbookMingguan extends Model
     {
         return $this->belongsTo(Mahasiswa::class);
     }
+    public function mentor()
+    {
+        return $this->belongsTo(Mentor::class);
+    }
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
+    public function departement()
+    {
+        return $this->belongsTo(Departement::class);
+    }
     public function ShowMahasiswa(){
         $mahasiswa_id = Mahasiswa::where('user_id',Auth::user()->id)->value('id');
         return $this->where('mahasiswa_id',$mahasiswa_id)->latest()->paginate(10);

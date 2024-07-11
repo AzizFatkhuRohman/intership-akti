@@ -106,7 +106,7 @@ class MahasiswaController extends Controller
     {
         $title = 'Mahasiswa';
         $absensi = Absensi::where('mahasiswa_id', $id)->latest()->paginate(20);
-        $mahasiswa = Mahasiswa::find($id)->first();
+        $mahasiswa = Mahasiswa::find($id);
         if (Auth::user()->role == 'mentor') {
             return view('mentor.manajemen.detail-mahasiswa', compact('title', 'absensi','mahasiswa'));
         } elseif (Auth::user()->role == 'section') {

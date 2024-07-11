@@ -34,8 +34,6 @@
                                             <option value="mentor">mentor</option>
                                             <option value="section">section</option>
                                             <option value="departement">departement</option>
-                                            <option value="dosen">dosen</option>
-                                            <option value="admin">admin</option>
                                         </select>
                                     </div>
                                     <div class="col-6">

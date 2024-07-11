@@ -36,6 +36,10 @@ class Section extends Model
     public function evaluasiGenap(){
         return $this->hasMany(EvaluasiGenap::class);
     }
+    public function loogbookMingguan()
+    {
+        return $this->hasMany(LogbookMingguan::class);
+    }
     public function ShowAdmin()
     {
         return $this->latest()->paginate(10);

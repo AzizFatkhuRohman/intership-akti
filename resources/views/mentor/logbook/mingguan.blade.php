@@ -83,6 +83,15 @@
                                                             id="exampleFormControlInput1"
                                                             value="{{$item->mahasiswa->user->nama}}" readonly>
                                                     </div>
+                                                    <div class="">
+                                                        <label for="exampleFormControlInput1"
+                                                            class="form-label">Status</label>
+                                                        <select class="form-select" aria-label="Default select example"
+                                                            name="status">
+                                                            <option value="accept">accept</option>
+                                                            <option value="reject">reject</option>
+                                                        </select>
+                                                    </div>
                                                     <div class="col-6">
                                                         <label for="exampleFormControlInput1"
                                                             class="form-label">Minggu</label>
@@ -138,15 +147,7 @@
                                                             id="exampleFormControlInput1" value="{{$item->hyarihatto}}"
                                                             readonly>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <label for="exampleFormControlInput1"
-                                                            class="form-label">Status</label>
-                                                        <select class="form-select" aria-label="Default select example"
-                                                            name="status">
-                                                            <option value="accept">accept</option>
-                                                            <option value="reject">reject</option>
-                                                        </select>
-                                                    </div>
+                                                    
                                                     <div class="col-6">
                                                         <label for="exampleFormControlInput1" class="form-label">Self
                                                             evaluation</label>

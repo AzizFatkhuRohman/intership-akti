@@ -37,6 +37,14 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
+                                        <label for="exampleFormControlInput1" class="form-label">Prodi</label>
+                                        <select class="select" aria-label="Default select example" name="prodi">
+                                            <option value=""></option>
+                                            <option value="topkr">topkr</option>
+                                            <option value="tpmo">tpmo</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
                                         <label for="exampleFormControlInput1" class="form-label">No Registrasi</label>
                                         <input type="number" class="form-control" id="exampleFormControlInput1"
                                             name="no_reg" required>
@@ -62,7 +70,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="">
                                         <label for="exampleFormControlInput1" class="form-label">Mentor</label>
                                         <select class="select" aria-label="Default select example"
                                             name="mentor_id">
@@ -139,6 +147,14 @@
                                                                 value="{{$item->user->nama}}" readonly>
                                                         </div>
                                                         <div class="col-6">
+                                                            <label for="exampleFormControlInput1" class="form-label">Prodi</label>
+                                                            <select class="select" aria-label="Default select example" name="prodi" required>
+                                                                <option value="{{$item->prodi}}">{{$item->prodi}}</option>
+                                                                <option value="topkr">topkr</option>
+                                                                <option value="tpmo">tpmo</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-6">
                                                             <label for="exampleFormControlInput1" class="form-label">No
                                                                 Registrasi</label>
                                                             <input type="number" class="form-control"
@@ -176,7 +192,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <div class="col-6">
+                                                        <div class="">
                                                             <label for="exampleFormControlInput1"
                                                                 class="form-label">Mentor</label>
                                                             <select class="select"

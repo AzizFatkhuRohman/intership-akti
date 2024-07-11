@@ -69,7 +69,7 @@ class LogbookMingguanController extends Controller
             ]);
         } else {
             $gambar = $request->file('gambar');
-            $namagambar = $gambar->getClientOriginalName();
+            $namagambar = $gambar->hashName();
             $gambar->move(public_path('logbook_mingguan'), $namagambar);
             $this->logbookMingguan->Store([
                 'mahasiswa_id' => $mahasiswa_id->id,
@@ -94,7 +94,7 @@ class LogbookMingguanController extends Controller
      */
     public function show($id)
     {
-        $data = LogbookMingguan::where('id',$id)->get();
+        $data = LogbookMingguan::with('mahasiswa','mentor','section','departement')->where('id',$id)->get();
         $pdf = Pdf::loadView('cetak.mingguan',compact('data'));
         $pdf->setPaper('A4', 'portrait');
         return $pdf->stream( Faker::create()->randomNumber(5, true). '-logbook-mingguan.pdf');

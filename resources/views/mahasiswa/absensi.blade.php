@@ -27,9 +27,10 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <label for="exampleFormControlInput1" class="form-label">Keterangan</label>
-                                        <select class="form-select" aria-label="Default select example"
+                                        <select class="select" aria-label="Default select example"
                                             name="keterangan" required>
                                             </option>
+                                            <option value=""></option>
                                             <option value="masuk">masuk</option>
                                             <option value="datang_terlambat">datang_terlambat</option>
                                             <option value="izin">izin</option>
@@ -131,7 +132,7 @@
                                                     <div class="col-6">
                                                         <label for="exampleFormControlInput1"
                                                             class="form-label">Keterangan</label>
-                                                        <select class="form-select" aria-label="Default select example"
+                                                        <select class="select" aria-label="Default select example"
                                                             name="keterangan" required>
                                                             <option value="{{$item->keterangan}}">{{$item->keterangan}}
                                                             </option>

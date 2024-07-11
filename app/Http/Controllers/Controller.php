@@ -353,8 +353,6 @@ class Controller extends BaseController
         if (Auth::user()->role == 'mahasiswa') {
             $this->mahasiswa->Store([
                 'user_id' => Auth::user()->id,
-                'dosen_id' => $request->dosen_id,
-                'section_id' => $request->mentor_id,
                 'no_reg' => $request->no_reg,
                 'batch' => $request->batch,
                 'shift' => $request->shift
@@ -412,7 +410,6 @@ class Controller extends BaseController
         ];
     
         $dataMahasiswa = [
-            'dosen_id'=>$request->dosen_id,
             'no_reg' => $request->no_reg,
             'batch' => $request->batch,
             'shift' => $request->shift

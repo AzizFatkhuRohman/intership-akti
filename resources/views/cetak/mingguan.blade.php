@@ -36,15 +36,15 @@
         <table id="tabel" style="width: 100%;">
             <tr>
                 <th id="tabel" style="padding: 3px;">SHOP</th>
-                <td id="tabel" style="padding: 3px;">{{ $data->mahasiswa->shop }}</td>
+                <td id="tabel" style="padding: 3px;">{{ $data->mentor->shop }}</td>
                 <th id="tabel" style="padding: 3px;">WEEK</th>
-                <td id="tabel" style="padding: 3px;">{{ $data->week }}</td>
+                <td id="tabel" style="padding: 3px;">{{ $data->minggu }}</td>
             </tr>
             <tr>
                 <th id="tabel" style="padding: 3px;">LINE / PROSES</th>
-                <td id="tabel" style="padding: 3px;">{{ $data->mahasiswa->line }}</td>
+                <td id="tabel" style="padding: 3px;">{{ $data->mentor->line }}</td>
                 <th id="tabel" style="padding: 3px;">MOUNTH</th>
-                <td id="tabel" style="padding: 3px;">{{ $data->mounth }}</td>
+                <td id="tabel" style="padding: 3px;">{{ $data->bulan }}</td>
             </tr>
             <tr>
                 <td colspan="4">
@@ -52,7 +52,7 @@
                         {{ $data->keterangan }}
                     </p>
                     @if ($data->gambar)
-                        <center><img src="{{ public_path('assets/img/logbook/' . $data->gambar) }}" width="200"></center>
+                        <center><img src="{{ public_path('logbook_mingguan/' . $data->gambar) }}" width="200"></center>
                     @endif
                 </td>
             </tr>
@@ -250,7 +250,7 @@
                     <div style="margin-left: 10px; margin-right: 10px;">
                         <label class="form-label">Komentar Mentor :</label>
                         <textarea class="form-control"
-                            style="height: 100px; border: none; resize: none;">{{ $data->komentar_mentor }}</textarea>
+                            style="height: 100px; border: none; resize: none;">{{ $data->komentar }}</textarea>
                     </div>
                 </td>
                 <td style="text-align: center; border: 1px solid black;">
