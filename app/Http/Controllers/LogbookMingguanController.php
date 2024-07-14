@@ -7,6 +7,7 @@ use App\Models\Mahasiswa;
 use App\Models\Mentor;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
+use App\Models\NotifSection;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +18,13 @@ class LogbookMingguanController extends Controller
     protected $logbookMingguan;
     protected $notifMahasiswa;
     protected $notifMentor;
-    public function __construct(LogbookMingguan $logbookMingguan, NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor)
+    protected $notifSection;
+    public function __construct(LogbookMingguan $logbookMingguan, NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor,NotifSection $notifSection)
     {
         $this->logbookMingguan = $logbookMingguan;
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifMentor=$notifMentor;
+        $this->notifSection=$notifSection;
     }
     /**
      * Display a listing of the resource.
@@ -53,7 +56,9 @@ class LogbookMingguanController extends Controller
             return view('mentor.logbook.mingguan', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'section') {
             $data = $this->logbookMingguan->ShowSection();
-            return view('section.logbook.mingguan', compact('title', 'data'));
+            $notif = $this->notifSection->Show();
+            $count = $this->notifSection->Count();
+            return view('section.logbook.mingguan', compact('title', 'data','notif','count'));
         }
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
+use App\Models\NotifSection;
 use App\Models\Sertifikat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +15,13 @@ class SertifikatController extends Controller
     protected $sertifikat;
     protected $notifMahasiswa;
     protected $notifMentor;
-    public function __construct(Sertifikat $sertifikat,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor)
+    protected $notifSection;
+    public function __construct(Sertifikat $sertifikat,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor,NotifSection $notifSection)
     {
         $this->sertifikat = $sertifikat;
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifMentor=$notifMentor;
+        $this->notifSection=$notifSection;
     }
     public function index()
     {
@@ -26,7 +29,9 @@ class SertifikatController extends Controller
         if (Auth::user()->role == 'mahasiswa') {
             $mahasiswa_id = Mahasiswa::where('user_id', Auth::user()->id)->value('id');
             $data = $this->sertifikat->ShowMahasiswa($mahasiswa_id);
-            return view('mahasiswa.report.sertifikat', compact('title', 'data'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.report.sertifikat', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'mentor') {
             $data = $this->sertifikat->ShowMentor();
             $notif= $this->notifMentor->Show();
@@ -34,7 +39,9 @@ class SertifikatController extends Controller
             return view('mentor.report.report-a3', compact('title', 'data','notif','count'));
         }elseif (Auth::user()->role == 'section') {
             $data = $this->sertifikat->ShowSection();
-            return view('section.report.report-a3', compact('title', 'data'));
+            $notif = $this->notifSection->Show();
+            $count = $this->notifSection->Count();
+            return view('section.report.report-a3', compact('title', 'data','notif','count'));
         }elseif(Auth::user()->role == 'departement'){
             return view('departement.report.sertifikat',[
                 'title'=>$title,

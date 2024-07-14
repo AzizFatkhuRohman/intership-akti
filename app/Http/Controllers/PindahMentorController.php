@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifMahasiswa;
 use App\Models\PindahMentor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,8 +12,10 @@ use Illuminate\Support\Facades\Auth;
 class PindahMentorController extends Controller
 {
     protected $pindahMentor;
-    public function __construct(PindahMentor $pindahMentor){
+    protected $notifMahasiswa;
+    public function __construct(PindahMentor $pindahMentor,NotifMahasiswa $notifMahasiswa){
         $this->pindahMentor=$pindahMentor;
+        $this->notifMahasiswa=$notifMahasiswa;
     }
     public function index()
     {
@@ -20,7 +23,9 @@ class PindahMentorController extends Controller
         $mentor = Mentor::latest()->get();
         if (Auth::user()->role == 'mahasiswa') {
             $data = $this->pindahMentor->ShowMahasiswa();
-            return view('mahasiswa.manajemen.pindah-mentor',compact('title','mentor','data'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.manajemen.pindah-mentor',compact('title','mentor','data','notif','count'));
         } elseif (Auth::user()->role == 'admin')  {
             $data = $this->pindahMentor->ShowAdmin();
             $mahasiswa = Mahasiswa::latest()->get();

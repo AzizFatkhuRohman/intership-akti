@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
 use App\Models\NotifMahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotifMahasiswaController extends Controller
 {
+    protected $notifMahasiswa;
+    public function __construct(NotifMahasiswa $notifMahasiswa){
+        $this->notifMahasiswa=$notifMahasiswa;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -34,9 +40,15 @@ class NotifMahasiswaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(NotifMahasiswa $notifMahasiswa)
+    public function show($id)
     {
-        //
+        $mahasiswa = Mahasiswa::where('user_id',Auth::user()->id)->value('id');
+        return view('mahasiswa.notif',[
+            'title'=>'Notification',
+            'data'=>NotifMahasiswa::where('mahasiswa_id',$mahasiswa)->latest()->paginate(20),
+            'notif'=>$this->notifMahasiswa->Show(),
+            'count'=>$this->notifMahasiswa->Count()
+        ]);
     }
 
     /**
@@ -50,9 +62,12 @@ class NotifMahasiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, NotifMahasiswa $notifMahasiswa)
+    public function update(Request $request, $id)
     {
-        //
+        NotifMahasiswa::find($id)->update([
+            'status'=>'dibaca'
+        ]);
+        return redirect('mahasiswa/notification/'.Auth::user()->id);
     }
 
     /**

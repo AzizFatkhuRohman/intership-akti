@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
+use App\Models\NotifSection;
 use App\Models\ReportA3;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,10 +15,12 @@ class ReportA3Controller extends Controller
     protected $reportA3;
     protected $notifMentor;
     protected $notifMahasiswa;
-    public function __construct(ReportA3 $reportA3,NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa){
+    protected $notifSection;
+    public function __construct(ReportA3 $reportA3,NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa,NotifSection $notifSection){
         $this->reportA3=$reportA3;
         $this->notifMentor=$notifMentor;
         $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifSection = $notifSection;
     }
     public function index()
     {
@@ -25,7 +28,9 @@ class ReportA3Controller extends Controller
         if (Auth::user()->role == 'mahasiswa') {
             $mahasiswa_id = Mahasiswa::where('user_id', Auth::user()->id)->value('id');
             $data = $this->reportA3->ShowMahasiswa($mahasiswa_id);
-            return view('mahasiswa.report.a3', compact('title', 'data'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.report.a3', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'mentor') {
             $data = $this->reportA3->ShowMentor();
             $notif= $this->notifMentor->Show();
@@ -33,7 +38,9 @@ class ReportA3Controller extends Controller
             return view('mentor.report.report-a3', compact('title', 'data','notif','count'));
         }elseif (Auth::user()->role == 'section') {
             $data = $this->reportA3->ShowSection();
-            return view('section.report.report-a3', compact('title', 'data'));
+            $notif=$this->notifSection->Show();
+            $count = $this->notifSection->Count();
+            return view('section.report.report-a3', compact('title', 'data','notif','count'));
         }elseif(Auth::user()->role == 'departement'){
             return view('departement.report.report-a3',[
                 'title'=>$title,

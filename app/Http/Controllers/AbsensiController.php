@@ -7,6 +7,7 @@ use App\Models\Mahasiswa;
 use App\Models\Mentor;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
+use App\Models\NotifSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +16,13 @@ class AbsensiController extends Controller
     protected $absensi;
     protected $notifMentor;
     protected $notifMahasiswa;
-    public function __construct(Absensi $absensi, NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa)
+    protected $notifSection;
+    public function __construct(Absensi $absensi, NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa,NotifSection $notifSection)
     {
         $this->absensi = $absensi;
         $this->notifMentor = $notifMentor;
         $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifSection=$notifSection;
     }
     public function index()
     {
@@ -32,7 +35,9 @@ class AbsensiController extends Controller
             return view('mentor.manajemen.absensi', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'section') {
             $data = $this->absensi->ShowSection();
-            return view('section.manajemen.absensi', compact('title', 'data'));
+            $notif= $this->notifSection->Show();
+            $count = $this->notifSection->Count();
+            return view('section.manajemen.absensi', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'mahasiswa') {
             $data = $this->absensi->ShowMahasiswa();
             $notif = $this->notifMahasiswa->Show();

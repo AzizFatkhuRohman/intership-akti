@@ -7,6 +7,7 @@ use App\Models\Mahasiswa;
 use App\Models\Mentor;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
+use App\Models\NotifSection;
 use App\Models\TriwulanGanjil;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -18,11 +19,13 @@ class TriwulanGanjilController extends Controller
     protected $triwulanGanjil;
     protected $notifMentor;
     protected $notifMahasiswa;
-    public function __construct(TriwulanGanjil $triwulanGanjil,NotifMentor $notifMentor, NotifMahasiswa $notifMahasiswa)
+    protected $notifSection;
+    public function __construct(TriwulanGanjil $triwulanGanjil,NotifMentor $notifMentor, NotifMahasiswa $notifMahasiswa,NotifSection $notifSection)
     {
         $this->triwulanGanjil = $triwulanGanjil;
         $this->notifMentor=$notifMentor;
         $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifSection=$notifSection;
     }
     public function index()
     {
@@ -36,10 +39,14 @@ class TriwulanGanjilController extends Controller
             return view('mentor.logbook.triwulan-ganjil', compact('title', 'data', 'mahasiswa','notif','count'));
         } elseif (Auth::user()->role == 'mahasiswa') {
             $data = $this->triwulanGanjil->ShowMahasiswa();
-            return view('mahasiswa.logbook.triwulan-ganjil', compact('title', 'data'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.logbook.triwulan-ganjil', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'section') {
             $data = $this->triwulanGanjil->ShowSection();
-            return view('section.logbook.triwulan-ganjil', compact('title', 'data'));
+            $notif = $this->notifSection->Show();
+            $count = $this->notifSection->Count();
+            return view('section.logbook.triwulan-ganjil', compact('title', 'data','notif','count'));
         } elseif(Auth::user()->role == 'dosen'){
             return view('dosen.logbook.triwulan-ganjil',[
                 'title'=>$title,
@@ -173,7 +180,9 @@ class TriwulanGanjilController extends Controller
             ->where(function ($query) use ($keyword) {
                 $query->where('status', 'LIKE', "%$keyword%");
             })
-            ->paginate(10)
+            ->paginate(10),
+            'notif'=>$this->notifMahasiswa->Show(),
+            'count'=>$this->notifMahasiswa->Count()
         ]);
         } elseif (Auth::user()->role == 'mentor') {
             $mentor_id = Mentor::where('user_id', Auth::user()->id)->value('id');
@@ -183,7 +192,9 @@ class TriwulanGanjilController extends Controller
                 ->where(function ($query) use ($keyword) {
                     $query->where('status', 'LIKE', "%$keyword%");
                 })
-                ->paginate(10)
+                ->paginate(10),
+                'notif'=>$this->notifMentor->Show(),
+                'count'=>$this->notifMentor->Count()
             ]);
         }
         

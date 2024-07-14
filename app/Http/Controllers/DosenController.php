@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
+use App\Models\NotifMahasiswa;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,9 +11,11 @@ use Illuminate\Support\Facades\Auth;
 class DosenController extends Controller
 {
     protected $dosen;
-    public function __construct(Dosen $dosen)
+    protected $notifMahasiswa;
+    public function __construct(Dosen $dosen,NotifMahasiswa $notifMahasiswa)
     {
         $this->dosen = $dosen;
+        $this->notifMahasiswa=$notifMahasiswa;
     }
     public function index()
     {
@@ -22,7 +25,9 @@ class DosenController extends Controller
         if (Auth::user()->role == 'admin') {
             return view('admin.manajemen.dosen', compact('title', 'user', 'data'));
         } elseif (Auth::user()->role == 'mahasiswa') {
-            return view('mahasiswa.manajemen.dosen', compact('title', 'user', 'data'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.manajemen.dosen', compact('title', 'user', 'data','notif','count'));
         }
 
     }

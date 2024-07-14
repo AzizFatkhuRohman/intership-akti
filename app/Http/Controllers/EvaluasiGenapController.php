@@ -7,6 +7,7 @@ use App\Models\Mahasiswa;
 use App\Models\Mentor;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
+use App\Models\NotifSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,10 +16,12 @@ class EvaluasiGenapController extends Controller
     protected $evaluasiGenap;
     protected $notifMahasiswa;
     protected $notifMentor;
-    public function __construct(EvaluasiGenap $evaluasiGenap,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor){
+    protected $notifSection;
+    public function __construct(EvaluasiGenap $evaluasiGenap,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor,NotifSection $notifSection){
         $this->evaluasiGenap=$evaluasiGenap;
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifMentor=$notifMentor;
+        $this->notifSection=$notifSection;
     }
     public function index()
     {
@@ -28,12 +31,16 @@ class EvaluasiGenapController extends Controller
             return view('mentor.logbook.bulanan-genap',[
                 'title'=>$title,
                 'mahasiswa'=>Mahasiswa::where('mentor_id',$mentor_id)->latest()->get(),
-                'data'=>$this->evaluasiGenap->Show()
+                'data'=>$this->evaluasiGenap->Show(),
+                'notif'=>$this->notifMentor->Show(),
+                'count'=>$this->notifMentor->Count()
             ]);
         } elseif(Auth::user()->role == 'section') {
             return view('section.logbook.bulanan-genap',[
                 'title'=>$title,
-                'data'=>$this->evaluasiGenap->Show()
+                'data'=>$this->evaluasiGenap->Show(),
+                'notif'=>$this->notifSection->Show(),
+                'count'=>$this->notifSection->Count()
             ]);
         }elseif(Auth::user()->role == 'departement'){
             return view('departement.logbook.bulanan-genap',[

@@ -9,6 +9,7 @@ use App\Models\Mahasiswa;
 use App\Models\Mentor;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
+use App\Models\NotifSection;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,7 +24,8 @@ class MahasiswaController extends Controller
     protected $departement;
     protected $notifMentor;
     protected $notifMahasiswa;
-    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor, Section $section, Departement $departement,NotifMentor $notifMentor, NotifMahasiswa $notifMahasiswa)
+    protected $notifSection;
+    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor, Section $section, Departement $departement,NotifMentor $notifMentor, NotifMahasiswa $notifMahasiswa,NotifSection $notifSection)
     {
         $this->mahasiswa = $mahasiswa;
         $this->dosen = $dosen;
@@ -32,6 +34,7 @@ class MahasiswaController extends Controller
         $this->section=$section;
         $this->notifMentor=$notifMentor;
         $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifSection=$notifSection;
     }
     public function index()
     {
@@ -51,7 +54,9 @@ class MahasiswaController extends Controller
             return view('mentor.manajemen.mahasiswa', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'section') {
             $data = $this->mahasiswa->ShowSection();
-            return view('section.manajemen.mahasiswa', compact('title', 'data'));
+            $notif = $this->notifSection->Show();
+            $count = $this->notifSection->Count();
+            return view('section.manajemen.mahasiswa', compact('title', 'data','notif','count'));
         } elseif(Auth::user()->role == 'dosen'){
             return view('dosen.manajemen.mahasiswa',[
                 'data'=>$this->mahasiswa->ShowDosen(),
@@ -122,7 +127,9 @@ class MahasiswaController extends Controller
             $count = $this->notifMentor->Count();
             return view('mentor.manajemen.detail-mahasiswa', compact('title', 'absensi','mahasiswa','notif','count'));
         } elseif (Auth::user()->role == 'section') {
-            return view('section.manajemen.detail-mahasiswa', compact('title', 'absensi','mahasiswa'));
+            $notif = $this->notifSection->Show();
+            $count = $this->notifSection->Count();
+            return view('section.manajemen.detail-mahasiswa', compact('title', 'absensi','mahasiswa','notif','count'));
         } elseif(Auth::user()->role == 'dosen'){
             return view('dosen.manajemen.detail-mahasiswa',[
                 'mahasiswa'=>$mahasiswa,

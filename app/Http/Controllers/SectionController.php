@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departement;
+use App\Models\NotifMahasiswa;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,9 +12,11 @@ use Illuminate\Support\Facades\Auth;
 class SectionController extends Controller
 {
     protected $section;
-    public function __construct(Section $section)
+    protected $notifMahasiswa;
+    public function __construct(Section $section,NotifMahasiswa $notifMahasiswa)
     {
         $this->section = $section;
+        $this->notifMahasiswa=$notifMahasiswa;
     }
     public function index()
     {
@@ -24,7 +27,9 @@ class SectionController extends Controller
         if (Auth::user()->role == 'admin') {
             return view('admin.manajemen.section', compact('title', 'data', 'user', 'departementData'));
         } elseif (Auth::user()->role == 'mahasiswa') {
-            return view('mahasiswa.manajemen.section', compact('title', 'data', 'user', 'departementData'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.manajemen.section', compact('title', 'data', 'user', 'departementData','notif','count'));
         }
 
     }

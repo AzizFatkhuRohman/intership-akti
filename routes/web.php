@@ -9,7 +9,9 @@ use App\Http\Controllers\EvaluasiGenapController;
 use App\Http\Controllers\LogbookMingguanController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MentorController;
+use App\Http\Controllers\NotifMahasiswaController;
 use App\Http\Controllers\NotifMentorController;
+use App\Http\Controllers\NotifSectionController;
 use App\Http\Controllers\PindahMentorController;
 use App\Http\Controllers\PptController;
 use App\Http\Controllers\ReportA3Controller;
@@ -86,6 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:section')->group(function () {
         Route::prefix('section')->group(function () {
             Route::get('dashboard', [Controller::class, 'section']);
+            Route::resource('notification',NotifSectionController::class);
             Route::prefix('manajemen')->group(function () {
                 Route::resource('mahasiswa', MahasiswaController::class);
                 Route::resource('absensi', AbsensiController::class);
@@ -137,6 +140,7 @@ Route::middleware('auth')->group(function () {
             Route::get('profil/{id}', [Controller::class, 'profil']);
             Route::put('profil/{id}', [Controller::class, 'profilMahasiswa']);
             Route::post('profil-add', [Controller::class, 'postProfil']);
+            Route::resource('notification',NotifMahasiswaController::class);
             Route::resource('mentor', MentorController::class);
             Route::resource('absensi', AbsensiController::class);
             Route::resource('data', MahasiswaController::class);

@@ -7,6 +7,7 @@ use App\Models\Mahasiswa;
 use App\Models\Mentor;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
+use App\Models\NotifSection;
 use App\Models\Ppt;
 use App\Models\Section;
 use Illuminate\Http\Request;
@@ -18,12 +19,14 @@ class PptController extends Controller
     protected $mahasiswa;
     protected $notifMahasiswa;
     protected $notifMentor;
-    public function __construct(Ppt $ppt, Mahasiswa $mahasiswa,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor)
+    protected $notifSection;
+    public function __construct(Ppt $ppt, Mahasiswa $mahasiswa,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor, NotifSection $notifSection)
     {
         $this->ppt = $ppt;
         $this->mahasiswa = $mahasiswa;
         $this->notifMahasiswa = $notifMahasiswa;
         $this->notifMentor=$notifMentor;
+        $this->notifSection=$notifSection;
     }
     public function index()
     {
@@ -31,7 +34,9 @@ class PptController extends Controller
         if (Auth::user()->role == 'mahasiswa') {
             $mahasiswa_id = Mahasiswa::where('user_id', Auth::user()->id)->value('id');
             $data = $this->ppt->ShowMahasiswa($mahasiswa_id);
-            return view('mahasiswa.report.ppt', compact('title', 'data'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.report.ppt', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'mentor') {
             $mentor_id = Mentor::where('user_id', Auth::user()->id)->value('id');
             $data = Ppt::where('mentor_id', $mentor_id)->latest()->paginate(20);
@@ -41,7 +46,9 @@ class PptController extends Controller
         } elseif (Auth::user()->role == 'section') {
             $section_id = Section::where('user_id', Auth::user()->id)->value('id');
             $data = Ppt::where('section_id', $section_id)->latest()->paginate(20);
-            return view('section.report.ppt', compact('title', 'data'));
+            $notif = $this->notifSection->Show();
+            $count = $this->notifSection->Count();
+            return view('section.report.ppt', compact('title', 'data','notif','count'));
         } elseif(Auth::user()->role == 'dosen'){
             $dosen_id = Dosen::where('user_id',Auth::user()->id)->value('id');
             $mahasiswa_id = Mahasiswa::where('dosen_id',$dosen_id)->value('id');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Departement;
 use App\Models\Mentor;
+use App\Models\NotifMahasiswa;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,9 +13,11 @@ use Illuminate\Support\Facades\Auth;
 class MentorController extends Controller
 {
     protected $mentor;
-    public function __construct(Mentor $mentor)
+    protected $notifMahasiswa;
+    public function __construct(Mentor $mentor,NotifMahasiswa $notifMahasiswa)
     {
         $this->mentor = $mentor;
+        $this->notifMahasiswa=$notifMahasiswa;
     }
     public function index()
     {
@@ -24,7 +27,9 @@ class MentorController extends Controller
         $departementData = Departement::latest()->get();
         $data = $this->mentor->ShowAdmin();
         if (Auth::user()->role == 'mahasiswa') {
-            return view('mahasiswa.manajemen.mentor', compact('title', 'data', 'user', 'sectionData','departementData'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.manajemen.mentor', compact('title', 'data', 'user', 'sectionData','departementData','notif','count'));
         } elseif (Auth::user()->role == 'admin') {
             return view('admin.manajemen.mentor', compact('title', 'data', 'user', 'sectionData','departementData'));
         }
@@ -110,14 +115,15 @@ class MentorController extends Controller
     public function search(Request $request){
         $title = 'Mentor';
         $keyword = $request->cari;
-        $data = Mentor::where('nama', 'LIKE', "%$keyword%")
-            ->orWhere('role', 'LIKE', "%$keyword%")
+        $data = User::where('nama', 'LIKE', "%$keyword%")
             ->orWhere('nomor_induk', 'LIKE', "%$keyword%")
             ->paginate(10);
         if (Auth::user()->role = 'mahasiswa') {
         return view('mahasiswa.manajemen.pengguna',[
             'title'=>$title,
-            'data'=> $data
+            'data'=> $data,
+            'notif'=> $this->notifMahasiswa->Show(),
+            'count'=> $this->notifMahasiswa->Count()
         ]);
         } else {
             # code...

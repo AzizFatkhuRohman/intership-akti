@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\NotifSection;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotifSectionController extends Controller
 {
+    protected $notifSection;
+    public function __construct(NotifSection $notifSection){
+        $this->notifSection=$notifSection;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -34,9 +40,15 @@ class NotifSectionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(NotifSection $notifSection)
+    public function show($id)
     {
-        //
+        $section = Section::where('user_id',$id)->value('id');
+        return view('section.notif',[
+            'title'=>'Notification',
+            'data'=>NotifSection::where('section_id',$section)->latest()->paginate(20),
+            'notif'=>$this->notifSection->Show(),
+            'count'=>$this->notifSection->Count()
+        ]);
     }
 
     /**
@@ -50,9 +62,12 @@ class NotifSectionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, NotifSection $notifSection)
+    public function update(Request $request, $id)
     {
-        //
+        NotifSection::find($id)->update([
+            'status'=>'dibaca'
+        ]);
+        return redirect('section/notification/'.Auth::user()->id);
     }
 
     /**

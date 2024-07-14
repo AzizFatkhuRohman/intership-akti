@@ -10,6 +10,7 @@ use App\Models\Mahasiswa;
 use App\Models\Mentor;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
+use App\Models\NotifSection;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -26,13 +27,15 @@ class Controller extends BaseController
     protected $mentor;
     protected $notifMahasiswa;
     protected $notifMentor;
-    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor,NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor)
+    protected $notifSection;
+    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor,NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor,NotifSection $notifSection)
     {
         $this->mahasiswa = $mahasiswa;
         $this->dosen = $dosen;
         $this->mentor = $mentor;
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifMentor=$notifMentor;
+        $this->notifSection=$notifSection;
     }
     public function admin()
     {
@@ -200,6 +203,8 @@ class Controller extends BaseController
     public function section()
     {
         $title = 'Dashboard';
+        $notif = $this->notifSection->Show();
+        $count = $this->notifSection->Count();
         $section_id = Section::where('user_id',Auth::user()->id)->value('id');
         $mahasiswa = Mahasiswa::where('section_id',$section_id)->count();
         $logbook = LogbookMingguan::where('section_id',$section_id)->count();
@@ -264,7 +269,7 @@ class Controller extends BaseController
                 ->where('section_id', $section_id)
                 ->whereMonth('created_at', 12)
                 ->count();
-        return view('section.index', compact('title','mahasiswa','absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs'));
+        return view('section.index', compact('title','mahasiswa','absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs','notif','count'));
     }
     public function departement(){
         $title = 'Dashboard';
@@ -352,7 +357,9 @@ class Controller extends BaseController
         } elseif (Auth::user()->role == 'mentor') {
             return view('mentor.profil',[
                 'title'=>$title,
-                'data'=>Mentor::with('user','section','departement')->where('user_id',$user_id)->first()
+                'data'=>Mentor::with('user','section','departement')->where('user_id',$user_id)->first(),
+                'notif'=>$this->notifMentor->Show(),
+                'count'=>$this->notifMentor->Count()
             ]);
         } elseif (Auth::user()->role == 'section') {
 

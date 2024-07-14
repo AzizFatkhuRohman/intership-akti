@@ -38,7 +38,9 @@ class EvaluasiGanjilController extends Controller
         } elseif(Auth::user()->role == 'section') {
         return view('section.logbook.bulanan-ganjil',[
             'title'=>$title,
-            'data'=>$this->evaluasiGanjil->Show()
+            'data'=>$this->evaluasiGanjil->Show(),
+            'notif'=>$this->notifSection->Show(),
+            'count'=>$this->notifSection->Count()
         ]);
         } elseif(Auth::user()->role == 'mahasiswa'){
             return view('mahasiswa.logbook.bulanan-ganjil',[

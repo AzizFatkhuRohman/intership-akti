@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\NotifMahasiswa;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +12,11 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     protected $user;
-    public function __construct(User $user)
+    protected $notifMahasiswa;
+    public function __construct(User $user,NotifMahasiswa $notifMahasiswa)
     {
         $this->user = $user;
+        $this->notifMahasiswa=$notifMahasiswa;
     }
 
     public function login()
@@ -68,7 +71,9 @@ class UserController extends Controller
             return view('admin.manajemen.pengguna', compact('title','data'));
         } elseif(Auth::user()->role == 'mahasiswa') {
             $data = $this->user->ShowMahasiswa();
-            return view('mahasiswa.manajemen.pengguna',compact('title','data'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.manajemen.pengguna',compact('title','data','notif','count'));
         }
 
     }
@@ -167,7 +172,9 @@ class UserController extends Controller
             'data'=> User::where('nama', 'LIKE', "%$keyword%")
             ->orWhere('role', 'LIKE', "%$keyword%")
             ->orWhere('nomor_induk', 'LIKE', "%$keyword%")
-            ->paginate(10)
+            ->paginate(10),
+            'notif'=> $this->notifMahasiswa->Show(),
+            'count'=>$this->notifMahasiswa->Count()
         ]);
         } else {
             # code...
