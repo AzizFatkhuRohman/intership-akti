@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use App\Models\TugasAkhir;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,9 +12,13 @@ use Illuminate\Support\Facades\Auth;
 class TugasAkhirController extends Controller
 {
     protected $tugasAkhir;
-    public function __construct(TugasAkhir $tugasAkhir)
+    protected $notifMahasiswa;
+    protected $notifMentor;
+    public function __construct(TugasAkhir $tugasAkhir,NotifMentor $notifMentor, NotifMahasiswa $notifMahasiswa)
     {
         $this->tugasAkhir = $tugasAkhir;
+        $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifMentor=$notifMentor;
     }
     public function index()
     {
@@ -23,7 +29,9 @@ class TugasAkhirController extends Controller
             return view('mahasiswa.report.tugas-akhir', compact('title', 'data'));
         } elseif (Auth::user()->role == 'mentor') {
             $data = $this->tugasAkhir->ShowMentor();
-            return view('mentor.report.tugas-akhir', compact('title', 'data'));
+            $notif= $this->notifMentor->Show();
+            $count = $this->notifMentor->Count();
+            return view('mentor.report.tugas-akhir', compact('title', 'data','notif','count'));
         }elseif (Auth::user()->role == 'section') {
             $data = $this->tugasAkhir->ShowSection();
             return view('section.report.tugas-akhir', compact('title', 'data'));

@@ -5,28 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AbsensiController extends Controller
 {
     protected $absensi;
-    public function __construct(Absensi $absensi)
+    protected $notifMentor;
+    protected $notifMahasiswa;
+    public function __construct(Absensi $absensi, NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa)
     {
         $this->absensi = $absensi;
+        $this->notifMentor = $notifMentor;
+        $this->notifMahasiswa=$notifMahasiswa;
     }
     public function index()
     {
         $title = 'Absensi';
+        
         if (Auth::user()->role == 'mentor') {
             $data = $this->absensi->ShowMentor();
-            return view('mentor.manajemen.absensi', compact('title', 'data'));
+            $notif = $this->notifMentor->Show();
+            $count = $this->notifMentor->Count();
+            return view('mentor.manajemen.absensi', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'section') {
             $data = $this->absensi->ShowSection();
             return view('section.manajemen.absensi', compact('title', 'data'));
         } elseif (Auth::user()->role == 'mahasiswa') {
             $data = $this->absensi->ShowMahasiswa();
-            return view('mahasiswa.absensi', compact('title', 'data'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.absensi', compact('title', 'data','notif','count'));
         } elseif(Auth::user()->role == 'dosen'){
             return view('dosen.manajemen.absensi',[
                 'title'=>$title,
@@ -76,6 +87,13 @@ class AbsensiController extends Controller
                 'gambar' => $namaGambar
             ]);
         }
+        $this->notifMentor->Store([
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id'=>$mahasiswa_id->mentor_id,
+            'section_id'=>$mahasiswa_id->section_id,
+            'departement_id'=>$mahasiswa_id->departement_id,
+            'content'=>Auth::user()->nama.' telah absensi '.$request->keterangan
+        ]);
         return back()->with('sukses', 'Data berhasil ditambahkan');
     }
 
@@ -122,6 +140,13 @@ class AbsensiController extends Controller
             $this->absensi->Edit($id, [
                 'keterangan' => $request->keterangan,
                 'status' => $request->status
+            ]);
+            $mahasiswa_id = Absensi::find($id)->value('mahasiswa_id');
+            $mentor_id = Mentor::where('user_id',Auth::user()->id)->value('id');
+            $this->notifMahasiswa->Store([
+                'mahasiswa_id'=>$mahasiswa_id,
+                'mentor_id'=>$mentor_id,
+                'content'=>'Absensi anda telah di '.$request->status
             ]);
             return redirect('mentor/manajemen/absensi')->with('sukses', 'Data berhasil diubah');
         }

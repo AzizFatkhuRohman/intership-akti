@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use App\Models\Ppt;
 use App\Models\Section;
 use Illuminate\Http\Request;
@@ -14,10 +16,14 @@ class PptController extends Controller
 {
     protected $ppt;
     protected $mahasiswa;
-    public function __construct(Ppt $ppt, Mahasiswa $mahasiswa)
+    protected $notifMahasiswa;
+    protected $notifMentor;
+    public function __construct(Ppt $ppt, Mahasiswa $mahasiswa,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor)
     {
         $this->ppt = $ppt;
         $this->mahasiswa = $mahasiswa;
+        $this->notifMahasiswa = $notifMahasiswa;
+        $this->notifMentor=$notifMentor;
     }
     public function index()
     {
@@ -29,7 +35,9 @@ class PptController extends Controller
         } elseif (Auth::user()->role == 'mentor') {
             $mentor_id = Mentor::where('user_id', Auth::user()->id)->value('id');
             $data = Ppt::where('mentor_id', $mentor_id)->latest()->paginate(20);
-            return view('mentor.report.ppt', compact('title', 'data'));
+            $notif= $this->notifMentor->Show();
+            $count = $this->notifMentor->Count();
+            return view('mentor.report.ppt', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'section') {
             $section_id = Section::where('user_id', Auth::user()->id)->value('id');
             $data = Ppt::where('section_id', $section_id)->latest()->paginate(20);

@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\EvaluasiGenap;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class EvaluasiGenapController extends Controller
 {
     protected $evaluasiGenap;
-    public function __construct(EvaluasiGenap $evaluasiGenap){
+    protected $notifMahasiswa;
+    protected $notifMentor;
+    public function __construct(EvaluasiGenap $evaluasiGenap,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor){
         $this->evaluasiGenap=$evaluasiGenap;
+        $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifMentor=$notifMentor;
     }
     public function index()
     {
@@ -37,7 +43,9 @@ class EvaluasiGenapController extends Controller
         }elseif(Auth::user()->role == 'mahasiswa'){
             return view('mahasiswa.logbook.bulanan-ganjil',[
                 'title'=>$title,
-                'data'=>$this->evaluasiGenap->Show()
+                'data'=>$this->evaluasiGenap->Show(),
+                'notif'=>$this->notifMahasiswa->Show(),
+                'count'=>$this->notifMahasiswa->Count()
             ]);
         }
         

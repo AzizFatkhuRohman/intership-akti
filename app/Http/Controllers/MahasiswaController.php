@@ -7,6 +7,8 @@ use App\Models\Departement;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,13 +21,17 @@ class MahasiswaController extends Controller
     protected $mentor;
     protected $section;
     protected $departement;
-    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor, Section $section, Departement $departement)
+    protected $notifMentor;
+    protected $notifMahasiswa;
+    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor, Section $section, Departement $departement,NotifMentor $notifMentor, NotifMahasiswa $notifMahasiswa)
     {
         $this->mahasiswa = $mahasiswa;
         $this->dosen = $dosen;
         $this->mentor = $mentor;
         $this->departement=$departement;
         $this->section=$section;
+        $this->notifMentor=$notifMentor;
+        $this->notifMahasiswa=$notifMahasiswa;
     }
     public function index()
     {
@@ -40,7 +46,9 @@ class MahasiswaController extends Controller
             return view('admin.manajemen.mahasiswa', compact('title', 'data', 'dataDosen', 'dataMentor', 'user','dataSection','dataDepartement'));
         } elseif (Auth::user()->role == 'mentor') {
             $data = $this->mahasiswa->ShowMentor();
-            return view('mentor.manajemen.mahasiswa', compact('title', 'data'));
+            $notif= $this->notifMentor->Show();
+            $count = $this->notifMentor->Count();
+            return view('mentor.manajemen.mahasiswa', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'section') {
             $data = $this->mahasiswa->ShowSection();
             return view('section.manajemen.mahasiswa', compact('title', 'data'));
@@ -81,7 +89,8 @@ class MahasiswaController extends Controller
                 'departement_id'=>$mentor_id->departement_id,
                 'dosen_id' => $request->dosen_id,
                 'no_reg' => $request->no_reg,
-                'batch' => $request->batch
+                'batch' => $request->batch,
+                'prodi'=>$request->prodi
             ]);
             return redirect('mahasiswa/dashboard')->with('sukses', 'Data berhasil ditambahkan');
         } else {
@@ -92,7 +101,8 @@ class MahasiswaController extends Controller
                 'departement_id'=>$mentor_id->departement_id,
                 'dosen_id' => $request->dosen_id,
                 'no_reg' => $request->no_reg,
-                'batch' => $request->batch
+                'batch' => $request->batch,
+                'prodi'=>$request->prodi
             ]);
             return back()->with('sukses', 'Data berhasil ditambahkan');
         }
@@ -108,7 +118,9 @@ class MahasiswaController extends Controller
         $absensi = Absensi::where('mahasiswa_id', $id)->latest()->paginate(20);
         $mahasiswa = Mahasiswa::find($id);
         if (Auth::user()->role == 'mentor') {
-            return view('mentor.manajemen.detail-mahasiswa', compact('title', 'absensi','mahasiswa'));
+            $notif= $this->notifMentor->Show();
+            $count = $this->notifMentor->Count();
+            return view('mentor.manajemen.detail-mahasiswa', compact('title', 'absensi','mahasiswa','notif','count'));
         } elseif (Auth::user()->role == 'section') {
             return view('section.manajemen.detail-mahasiswa', compact('title', 'absensi','mahasiswa'));
         } elseif(Auth::user()->role == 'dosen'){

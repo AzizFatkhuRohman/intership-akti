@@ -9,6 +9,7 @@ use App\Http\Controllers\EvaluasiGenapController;
 use App\Http\Controllers\LogbookMingguanController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MentorController;
+use App\Http\Controllers\NotifMentorController;
 use App\Http\Controllers\PindahMentorController;
 use App\Http\Controllers\PptController;
 use App\Http\Controllers\ReportA3Controller;
@@ -109,6 +110,7 @@ Route::middleware('auth')->group(function () {
             Route::get('dashboard', [Controller::class, 'mentor']);
             Route::get('profil/{id}', [Controller::class, 'profil']);
             Route::put('profil/{id}', [Controller::class, 'profilMentor']);
+            Route::resource('notification',NotifMentorController::class);
             Route::resource('data',MentorController::class);
             Route::prefix('manajemen')->group(function () {
                 Route::resource('mahasiswa', MahasiswaController::class);

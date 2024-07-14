@@ -8,6 +8,8 @@ use App\Models\Dosen;
 use App\Models\LogbookMingguan;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -22,11 +24,15 @@ class Controller extends BaseController
     protected $mahasiswa;
     protected $dosen;
     protected $mentor;
-    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor)
+    protected $notifMahasiswa;
+    protected $notifMentor;
+    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor,NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor)
     {
         $this->mahasiswa = $mahasiswa;
         $this->dosen = $dosen;
         $this->mentor = $mentor;
+        $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifMentor=$notifMentor;
     }
     public function admin()
     {
@@ -40,6 +46,8 @@ class Controller extends BaseController
     public function mahasiswa()
     {
         $title = 'Dashboard';
+        $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
         $mahasiswa = Mahasiswa::where('user_id', Auth::user()->id)->first();
         $dosen = Dosen::latest()->get();
         $mentor = Mentor::latest()->get();
@@ -108,9 +116,9 @@ class Controller extends BaseController
         }
 
         if ($mahasiswa != null) {
-            return view('mahasiswa.index', compact('title', 'mahasiswa', 'absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs'));
+            return view('mahasiswa.index', compact('title', 'mahasiswa', 'absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs','notif','count'));
         } else {
-            return view('mahasiswa.index', compact('title', 'mahasiswa','mentor','dosen'));
+            return view('mahasiswa.index', compact('title', 'mahasiswa','mentor','dosen','notif','count'));
         }
 
     }
@@ -121,6 +129,8 @@ class Controller extends BaseController
     public function mentor()
     {
         $title = 'Dashboard';
+        $notif = $this->notifMentor->Show();
+        $count = $this->notifMentor->Count();
         $mentor_id = Mentor::where('user_id',Auth::user()->id)->value('id');
         $mahasiswa = Mahasiswa::where('mentor_id',$mentor_id)->count();
         $logbook = LogbookMingguan::where('mentor_id',$mentor_id)->count();
@@ -185,7 +195,7 @@ class Controller extends BaseController
                 ->where('mentor_id', $mentor_id)
                 ->whereMonth('created_at', 12)
                 ->count();
-        return view('mentor.index', compact('title','mahasiswa','absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs'));
+        return view('mentor.index', compact('title','mahasiswa','absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs','notif','count'));
     }
     public function section()
     {
@@ -355,7 +365,8 @@ class Controller extends BaseController
                 'user_id' => Auth::user()->id,
                 'no_reg' => $request->no_reg,
                 'batch' => $request->batch,
-                'shift' => $request->shift
+                'shift' => $request->shift,
+                'prodi'=>$request->prodi
             ]);
             return redirect('mahasiswa/profil/' . Auth::user()->id)->with('sukses', 'Data berhasil ditambahkan');
         } elseif (Auth::user()->role == 'dosen') {

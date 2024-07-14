@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use App\Models\Sertifikat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,9 +12,13 @@ use Illuminate\Support\Facades\Auth;
 class SertifikatController extends Controller
 {
     protected $sertifikat;
-    public function __construct(Sertifikat $sertifikat)
+    protected $notifMahasiswa;
+    protected $notifMentor;
+    public function __construct(Sertifikat $sertifikat,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor)
     {
         $this->sertifikat = $sertifikat;
+        $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifMentor=$notifMentor;
     }
     public function index()
     {
@@ -23,7 +29,9 @@ class SertifikatController extends Controller
             return view('mahasiswa.report.sertifikat', compact('title', 'data'));
         } elseif (Auth::user()->role == 'mentor') {
             $data = $this->sertifikat->ShowMentor();
-            return view('mentor.report.report-a3', compact('title', 'data'));
+            $notif= $this->notifMentor->Show();
+            $count = $this->notifMentor->Count();
+            return view('mentor.report.report-a3', compact('title', 'data','notif','count'));
         }elseif (Auth::user()->role == 'section') {
             $data = $this->sertifikat->ShowSection();
             return view('section.report.report-a3', compact('title', 'data'));

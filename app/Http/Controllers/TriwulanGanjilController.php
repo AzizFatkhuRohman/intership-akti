@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use App\Models\TriwulanGanjil;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -14,9 +16,13 @@ use Faker\Factory as Faker;
 class TriwulanGanjilController extends Controller
 {
     protected $triwulanGanjil;
-    public function __construct(TriwulanGanjil $triwulanGanjil)
+    protected $notifMentor;
+    protected $notifMahasiswa;
+    public function __construct(TriwulanGanjil $triwulanGanjil,NotifMentor $notifMentor, NotifMahasiswa $notifMahasiswa)
     {
         $this->triwulanGanjil = $triwulanGanjil;
+        $this->notifMentor=$notifMentor;
+        $this->notifMahasiswa=$notifMahasiswa;
     }
     public function index()
     {
@@ -25,7 +31,9 @@ class TriwulanGanjilController extends Controller
             $data = $this->triwulanGanjil->ShowMentor();
             $mentor_id = Mentor::where('user_id', Auth::user()->id)->value('id');
             $mahasiswa = Mahasiswa::where('mentor_id', $mentor_id)->latest()->get();
-            return view('mentor.logbook.triwulan-ganjil', compact('title', 'data', 'mahasiswa'));
+            $notif= $this->notifMentor->Show();
+            $count = $this->notifMentor->Count();
+            return view('mentor.logbook.triwulan-ganjil', compact('title', 'data', 'mahasiswa','notif','count'));
         } elseif (Auth::user()->role == 'mahasiswa') {
             $data = $this->triwulanGanjil->ShowMahasiswa();
             return view('mahasiswa.logbook.triwulan-ganjil', compact('title', 'data'));

@@ -44,6 +44,18 @@ class Mentor extends Model
     public function evaluasiGenap(){
         return $this->hasMany(EvaluasiGenap::class);
     }
+    public function notifMahasiswa()
+    {
+        return $this->hasMany(NotifMahasiswa::class);
+    }
+    public function notifMentor()
+    {
+        return $this->hasMany(NotifMentor::class);
+    }
+    public function notifSection()
+    {
+        return $this->hasMany(NotifSection::class);
+    }
     public function ShowAdmin(){
         return $this->latest()->paginate(10);
     }

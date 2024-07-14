@@ -251,6 +251,13 @@
                                                                 id="exampleFormControlInput1" name="hyarihatto"
                                                                 value="{{$item->hyarihatto}}" required>
                                                         </div>
+                                                        <div class="mb-3">
+                                                            <label for="exampleFormControlTextarea1"
+                                                                class="form-label">Komentar</label>
+                                                            <textarea class="form-control" id="exampleFormControlTextarea2"
+                                                                rows="3" name="komentar"
+                                                                readonly>{{$item->komentar}}</textarea>
+                                                        </div>
                                                     </div>
 
                                             </div>

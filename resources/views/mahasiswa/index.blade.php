@@ -74,13 +74,22 @@
                                                             id="exampleFormControlInput1" name="batch">
                                                     </div>
                                                 </div>
-                                                <div class="">
+                                                <div class="col-6">
                                                     <label for="exampleFormControlInput1"
                                                         class="form-label">Shift</label>
                                                     <select class="form-select" aria-label="Default select example"
                                                         name="shift" required>
                                                         <option value="red">red</option>
                                                         <option value="white">white</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="exampleFormControlInput1"
+                                                        class="form-label">Prodi</label>
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        name="prodi" required>
+                                                        <option value="tpmo">tpmo</option>
+                                                        <option value="topkr">topkr</option>
                                                     </select>
                                                 </div>
                                             </div>

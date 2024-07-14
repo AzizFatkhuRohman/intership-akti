@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\LogbookMingguan;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,9 +15,13 @@ use Faker\Factory as Faker;
 class LogbookMingguanController extends Controller
 {
     protected $logbookMingguan;
-    public function __construct(LogbookMingguan $logbookMingguan)
+    protected $notifMahasiswa;
+    protected $notifMentor;
+    public function __construct(LogbookMingguan $logbookMingguan, NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor)
     {
         $this->logbookMingguan = $logbookMingguan;
+        $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifMentor=$notifMentor;
     }
     /**
      * Display a listing of the resource.
@@ -37,10 +43,14 @@ class LogbookMingguanController extends Controller
             ]);
         } elseif (Auth::user()->role == 'mahasiswa') {
             $data = $this->logbookMingguan->ShowMahasiswa();
-            return view('mahasiswa.logbook.mingguan', compact('title', 'data'));
+            $notif = $this->notifMahasiswa->Show();
+            $count = $this->notifMahasiswa->Count();
+            return view('mahasiswa.logbook.mingguan', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'mentor') {
             $data = $this->logbookMingguan->ShowMentor();
-            return view('mentor.logbook.mingguan', compact('title', 'data'));
+            $notif = $this->notifMentor->Show();
+            $count = $this->notifMentor->Count();
+            return view('mentor.logbook.mingguan', compact('title', 'data','notif','count'));
         } elseif (Auth::user()->role == 'section') {
             $data = $this->logbookMingguan->ShowSection();
             return view('section.logbook.mingguan', compact('title', 'data'));
@@ -86,6 +96,13 @@ class LogbookMingguanController extends Controller
                 'hyarihatto' => $request->hyarihatto
             ]);
         }
+        $this->notifMentor->Store([
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id'=>$mahasiswa_id->mentor_id,
+            'section_id'=>$mahasiswa_id->section_id,
+            'departement_id'=>$mahasiswa_id->departement_id,
+            'content'=>Auth::user()->nama.' Membuat logbook mingguan'
+        ]);
         return back()->with('sukses', 'Data berhasil ditambahkan');
     }
 
@@ -121,6 +138,14 @@ class LogbookMingguanController extends Controller
                 'self_evaluation' => $request->self_evaluation,
                 'komentar' => $request->komentar
             ]);
+            $mahasiswa_id = LogbookMingguan::find($id)->value('mahasiswa_id');
+            $mentor_id = Mentor::where('user_id',Auth::user()->id)->value('id');
+            $this->notifMahasiswa->Store([
+                'mahasiswa_id'=>$mahasiswa_id,
+                'mentor_id'=>$mentor_id,
+                'content'=>'Logbook anda telah di '.$request->status
+            ]);
+            return redirect('mentor/logbook/mingguan')->with('sukses', 'Data berhasil diubah');
         } elseif (Auth::user()->role == 'mahasiswa') {
             if (!$request->gambar) {
                 $this->logbookMingguan->Edit($id, [
@@ -147,9 +172,16 @@ class LogbookMingguanController extends Controller
                     'hyarihatto' => $request->hyarihatto
                 ]);
             }
+            $mahasiswa = Mahasiswa::where('user_id',Auth::user()->id)->first();
+            $this->notifMentor->Store([
+                'mahasiswa_id'=>$mahasiswa->id,
+                'mentor_id'=>$mahasiswa->mentor_id,
+                'section_id'=>$mahasiswa->section_id,
+                'departement_id'=>$mahasiswa->departement_id,
+                'content'=>Auth::user()->nama.' Telah mengubah logbook mingguan'
+            ]);
+            return redirect('mahasiswa/logbook/mingguan')->with('sukses', 'Data berhasil diubah');
         }
-
-        return back()->with('sukses', 'Data berhasil diubah');
     }
 
     /**

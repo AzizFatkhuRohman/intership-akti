@@ -86,8 +86,9 @@
                                                     <div class="">
                                                         <label for="exampleFormControlInput1"
                                                             class="form-label">Status</label>
-                                                        <select class="form-select" aria-label="Default select example"
+                                                        <select class="select" aria-label="Default select example"
                                                             name="status">
+                                                            <option value=""></option>
                                                             <option value="accept">accept</option>
                                                             <option value="reject">reject</option>
                                                         </select>

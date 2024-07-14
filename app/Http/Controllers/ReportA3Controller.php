@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\NotifMahasiswa;
+use App\Models\NotifMentor;
 use App\Models\ReportA3;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,8 +12,12 @@ use Illuminate\Support\Facades\Auth;
 class ReportA3Controller extends Controller
 {
     protected $reportA3;
-    public function __construct(ReportA3 $reportA3){
+    protected $notifMentor;
+    protected $notifMahasiswa;
+    public function __construct(ReportA3 $reportA3,NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa){
         $this->reportA3=$reportA3;
+        $this->notifMentor=$notifMentor;
+        $this->notifMahasiswa=$notifMahasiswa;
     }
     public function index()
     {
@@ -22,7 +28,9 @@ class ReportA3Controller extends Controller
             return view('mahasiswa.report.a3', compact('title', 'data'));
         } elseif (Auth::user()->role == 'mentor') {
             $data = $this->reportA3->ShowMentor();
-            return view('mentor.report.report-a3', compact('title', 'data'));
+            $notif= $this->notifMentor->Show();
+            $count = $this->notifMentor->Count();
+            return view('mentor.report.report-a3', compact('title', 'data','notif','count'));
         }elseif (Auth::user()->role == 'section') {
             $data = $this->reportA3->ShowSection();
             return view('section.report.report-a3', compact('title', 'data'));

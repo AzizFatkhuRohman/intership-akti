@@ -33,142 +33,301 @@
                     @endforeach
                   </select>
                 </div>
-                <label for="exampleFormControlInput1" class="form-label"><b>A. Kesehatan</b></label>
                 <div class="mb-3">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="kesehatan[]" id="inlineRadio1" value="1">
-                    <label class="form-check-label" for="inlineRadio1">1</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="kesehatan[]" id="inlineRadio2" value="2">
-                    <label class="form-check-label" for="inlineRadio2">2</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="kesehatan[]" id="inlineRadio1" value="3">
-                    <label class="form-check-label" for="inlineRadio1">3</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="kesehatan[]" id="inlineRadio2" value="4">
-                    <label class="form-check-label" for="inlineRadio2">4</label>
-                  </div>
+                  <label for="exampleFormControlInput1" class="form-label"><b>A. KESEHATAN</b></label>
+                  <select class="form-select" aria-label="Default select example" name="kesehatan">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
                 <div>
-                  <b>B. Perilaku Safety</b>
+                  <b>B. PERILAKU SAFETY</b>
                 </div>
-                <label for="exampleFormControlInput1" class="form-label"><b>B1. Safety Accident</b></label>
-              <div class="mb-3">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="safety_accident[]" id="inlineRadio1" value="1">
-                  <label class="form-check-label" for="inlineRadio1">1</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>B1. Safety Accident</b></label>
+                  <select class="form-select" aria-label="Default select example" name="safety_accident">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="safety_accident[]" id="inlineRadio2" value="2">
-                  <label class="form-check-label" for="inlineRadio2">2</label>
+
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>B2. Penggunaan APD</b></label>
+                  <select class="form-select" aria-label="Default select example" name="apd">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="safety_accident[]" id="inlineRadio1" value="3">
-                  <label class="form-check-label" for="inlineRadio1">3</label>
+
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>B3. Penerapan SPC</b></label>
+                  <select class="form-select" aria-label="Default select example" name="spc">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="safety_accident[]" id="inlineRadio2" value="4">
-                  <label class="form-check-label" for="inlineRadio2">4</label>
+
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>B4. Penerapan SCW</b></label>
+                  <select class="form-select" aria-label="Default select example" name="scw">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-            </div>
-            <label for="exampleFormControlInput1" class="form-label"><b>B2. Penggunaan APD</b></label>
-              <div class="mb-3">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="apd[]" id="inlineRadio1" value="1">
-                  <label class="form-check-label" for="inlineRadio1">1</label>
+
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>B5. Kemampuan Duga Bahaya</b></label>
+                  <select class="form-select" aria-label="Default select example" name="kyt">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="apd[]" id="inlineRadio2" value="2">
-                  <label class="form-check-label" for="inlineRadio2">2</label>
+
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>B6. Safety (KY Ability)</b></label>
+                  <select class="form-select" aria-label="Default select example" name="safety_ability">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="apd[]" id="inlineRadio1" value="3">
-                  <label class="form-check-label" for="inlineRadio1">3</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>B7. Safety (Idea Hyarihatto)</b></label>
+                  <select class="form-select" aria-label="Default select example" name="safety_idea">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="apd[]" id="inlineRadio2" value="4">
-                  <label class="form-check-label" for="inlineRadio2">4</label>
+                <b>C. QUALITY</b>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>C1. BIQ (DATA DEFECT /OPT)</b></label>
+                  <select class="form-select" aria-label="Default select example" name="biq">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-            </div>
-            <label for="exampleFormControlInput1" class="form-label"><b>B3. Penerapan SPC</b></label>
-              <div class="mb-3">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="spc[]" id="inlineRadio1" value="1">
-                  <label class="form-check-label" for="inlineRadio1">1</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>C2. DIV QUALITY</b></label>
+                  <select class="form-select" aria-label="Default select example" name="div">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="spc[]" id="inlineRadio2" value="2">
-                  <label class="form-check-label" for="inlineRadio2">2</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>C3. CUSTOMER / NEXT PROSES</b></label>
+                  <select class="form-select" aria-label="Default select example" name="customer">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="spc[]" id="inlineRadio1" value="3">
-                  <label class="form-check-label" for="inlineRadio1">3</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>C4. ANALISA PROBLEM</b></label>
+                  <select class="form-select" aria-label="Default select example" name="analisa">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="spc[]" id="inlineRadio2" value="4">
-                  <label class="form-check-label" for="inlineRadio2">4</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>C5. REPORTING</b></label>
+                  <select class="form-select" aria-label="Default select example" name="reporting">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-            </div>
-            <label for="exampleFormControlInput1" class="form-label"><b>B4. Penerapan SCW</b></label>
-              <div class="mb-3">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="scw[]" id="inlineRadio1" value="1">
-                  <label class="form-check-label" for="inlineRadio1">1</label>
+                <b>D. PRODUCTIVITY</b>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>D1. PENGUASAAN JOB</b></label>
+                  <select class="form-select" aria-label="Default select example" name="job">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="scw[]" id="inlineRadio2" value="2">
-                  <label class="form-check-label" for="inlineRadio2">2</label>
+                <b>D.2. PEKERJAAN</b>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>D.2.1. Motivasi melakukan pekerjaan</b></label>
+                  <select class="form-select" aria-label="Default select example" name="motivasi">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="scw[]" id="inlineRadio1" value="3">
-                  <label class="form-check-label" for="inlineRadio1">3</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>D.2.2. Penyelesaian pekerjaan</b></label>
+                  <select class="form-select" aria-label="Default select example" name="penyelesaian">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="scw[]" id="inlineRadio2" value="4">
-                  <label class="form-check-label" for="inlineRadio2">4</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>D.2.3. Karakteristik hasil kerja</b></label>
+                  <select class="form-select" aria-label="Default select example" name="karakteristik">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-            </div>
-            <label for="exampleFormControlInput1" class="form-label"><b>B5. Kemampuan Duga Bahaya</b></label>
-              <div class="mb-3">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="kyt[]" id="inlineRadio1" value="1">
-                  <label class="form-check-label" for="inlineRadio1">1</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>D.3. PERSIAPAN PRODUKSI (TPM)</b></label>
+                  <select class="form-select" aria-label="Default select example" name="tpm">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="kyt[]" id="inlineRadio2" value="2">
-                  <label class="form-check-label" for="inlineRadio2">2</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>D.4. LINE STOP</b></label>
+                  <select class="form-select" aria-label="Default select example" name="line">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="kyt[]" id="inlineRadio1" value="3">
-                  <label class="form-check-label" for="inlineRadio1">3</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>D.5. REPAIR/ REWORK</b></label>
+                  <select class="form-select" aria-label="Default select example" name="repair">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="kyt[]" id="inlineRadio2" value="4">
-                  <label class="form-check-label" for="inlineRadio2">4</label>
+                <b>E. COST</b>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>E.1. PEMAKAIAN MATERIAL (INDIRECT)</b></label>
+                  <select class="form-select" aria-label="Default select example" name="indirect">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-            </div>
-            <label for="exampleFormControlInput1" class="form-label"><b>B6. Safety (KY Ability)</b></label>
-              <div class="mb-3">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="safety_ability[]" id="inlineRadio1" value="1">
-                  <label class="form-check-label" for="inlineRadio1">1</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>E.2. STD PEMAKAIAN MATERIAL (DIRECT)</b></label>
+                  <select class="form-select" aria-label="Default select example" name="direct">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="safety_ability[]" id="inlineRadio2" value="2">
-                  <label class="form-check-label" for="inlineRadio2">2</label>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>E.3. RULE ABNORMALITY MATERIAL</b></label>
+                  <select class="form-select" aria-label="Default select example" name="abnormality">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="safety_ability[]" id="inlineRadio1" value="3">
-                  <label class="form-check-label" for="inlineRadio1">3</label>
+                <b>F. MORAL</b>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.1. KEHADIRAN</b></label>
+                  <select class="form-select" aria-label="Default select example" name="kehadiran">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="safety_ability[]" id="inlineRadio2" value="4">
-                  <label class="form-check-label" for="inlineRadio2">4</label>
+                <b>F2. DAYA PIKIR</b>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.2.1. Mindset</b></label>
+                  <select class="form-select" aria-label="Default select example" name="mindset">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                 </div>
-            </div>
+                <b>F3. ETIKA KERJA</b>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.3.1. Kepribadian</b></label>
+                  <select class="form-select" aria-label="Default select example" name="pribadi">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.4. JAM KERJA NORMAL (JKN)</b></label>
+                  <select class="form-select" aria-label="Default select example" name="jkn">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.5. 5R</b></label>
+                  <select class="form-select" aria-label="Default select example" name="lima_r">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.6. QCC</b></label>
+                  <select class="form-select" aria-label="Default select example" name="qcc">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.7. IDEA/IMPROVEMENT</b></label>
+                  <select class="form-select" aria-label="Default select example" name="idea">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                <b>F.8. GCRC TRAINING</b>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.8.1. TJI</b></label>
+                  <select class="form-select" aria-label="Default select example" name="tji">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Simpan</button>

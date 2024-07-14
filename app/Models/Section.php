@@ -40,6 +40,14 @@ class Section extends Model
     {
         return $this->hasMany(LogbookMingguan::class);
     }
+    public function notifMentor()
+    {
+        return $this->hasMany(NotifMentor::class);
+    }
+    public function notifSection()
+    {
+        return $this->hasMany(NotifSection::class);
+    }
     public function ShowAdmin()
     {
         return $this->latest()->paginate(10);

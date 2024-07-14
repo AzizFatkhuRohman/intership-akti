@@ -41,6 +41,14 @@ class Mahasiswa extends Model
     {
         return $this->hasMany(Absensi::class);
     }
+    public function notifMahasiswa()
+    {
+        return $this->hasMany(NotifMahasiswa::class);
+    }
+    public function notifMentor()
+    {
+        return $this->hasMany(NotifMentor::class);
+    }
     public function pindahMentor()
     {
         return $this->hasMany(PindahMentor::class);
