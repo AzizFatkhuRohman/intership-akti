@@ -49,6 +49,10 @@ class Mahasiswa extends Model
     {
         return $this->hasMany(NotifMentor::class);
     }
+    public function notifAdmin()
+    {
+        return $this->hasMany(NotifAdmin::class);
+    }
     public function pindahMentor()
     {
         return $this->hasMany(PindahMentor::class);

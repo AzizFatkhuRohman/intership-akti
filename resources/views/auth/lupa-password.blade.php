@@ -49,7 +49,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css
     });
         </script>
         @endif
-        <div class="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">
+        <div class="text-center p-5">
             <div class="d-flex flex-column align-content-end">
                 <div class="app-auth-body mx-auto">
                     <div class="app-auth-branding mb-4">
@@ -88,7 +88,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css
                                     <!--//col-6-->
                                     <div class="col-6">
                                         <div class="forgot-password text-end">
-                                            <a href="{{url('/')}}">Kembali</a>
+                                            <a href="{{url('/')}}">Login</a>
                                         </div>
                                     </div>
                                     <!--//col-6-->
@@ -122,13 +122,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css
             <!--//flex-column-->
         </div>
         <!--//auth-main-col-->
-        <div class="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
-            <div class="auth-background-holder">
-            </div>
-            <div class="auth-background-mask"></div>
-
-            <!--//auth-background-overlay-->
-        </div>
+        
         <!--//auth-background-col-->
 
     </div>

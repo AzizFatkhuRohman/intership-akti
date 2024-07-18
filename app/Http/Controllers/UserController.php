@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mahasiswa;
+use App\Models\NotifAdmin;
 use App\Models\NotifMahasiswa;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,10 +13,12 @@ class UserController extends Controller
 {
     protected $user;
     protected $notifMahasiswa;
-    public function __construct(User $user,NotifMahasiswa $notifMahasiswa)
+    protected $notifAdmin;
+    public function __construct(User $user,NotifMahasiswa $notifMahasiswa,NotifAdmin $notifAdmin)
     {
         $this->user = $user;
         $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifAdmin=$notifAdmin;
     }
 
     public function login()
@@ -68,7 +70,9 @@ class UserController extends Controller
         $title = 'Pengguna';
         if (Auth::user()->role == 'admin') {
             $data = $this->user->ShowAdmin();
-            return view('admin.manajemen.pengguna', compact('title','data'));
+            $notif = $this->notifAdmin->Show();
+            $count = $this->notifAdmin->Count();
+            return view('admin.manajemen.pengguna', compact('title','data','notif','count'));
         } elseif(Auth::user()->role == 'mahasiswa') {
             $data = $this->user->ShowMahasiswa();
             $notif = $this->notifMahasiswa->Show();

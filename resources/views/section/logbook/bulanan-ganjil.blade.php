@@ -33,7 +33,7 @@
             </td>
             <td>
               <div class="d-flex">
-                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-info">
+                <a href="{{url('section/logbook/bulanan-ganjil/'.$item->id)}}" target="_blank" rel="noopener noreferrer" class="btn btn-info">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-eye-fill text-white" viewBox="0 0 16 16">
                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
@@ -41,44 +41,46 @@
                       d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
                   </svg>
                 </a>
-                <!-- Button trigger modal -->
+                @if ($item->status == 'pending'||$item->status == 'reject')
+                    <!-- Button trigger modal -->
                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                  data-bs-target="#example{{$item->id}}">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-pencil-square text-white" viewBox="0 0 16 16">
-                    <path
-                      d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                    <path fill-rule="evenodd"
-                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                  </svg>
-                </button>
+                data-bs-target="#example{{$item->id}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-pencil-square text-white" viewBox="0 0 16 16">
+                  <path
+                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                  <path fill-rule="evenodd"
+                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                </svg>
+              </button>
 
-                <!-- Modal -->
-                <div class="modal fade" id="example{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                  aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <form action="{{url('section/logbook/bulanan-ganjil/'.$item->id)}}" method="post">
-                          @csrf
-                          @method('put')
-                          <select class="form-select" aria-label="Default select example" name="status">
-                            <option selected>Pilih Status</option>
-                            <option value="accept">accept</option>
-                            <option value="reject">reject</option>
-                          </select>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </div>
-                      </form>
+              <!-- Modal -->
+              <div class="modal fade" id="example{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
+                      <form action="{{url('section/logbook/bulanan-ganjil/'.$item->id)}}" method="post">
+                        @csrf
+                        @method('put')
+                        <select class="form-select" aria-label="Default select example" name="status">
+                          <option selected>Pilih Status</option>
+                          <option value="accept">accept</option>
+                          <option value="reject">reject</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    </form>
                   </div>
                 </div>
+              </div>
+                @endif
               </div>
             </td>
           </tr>

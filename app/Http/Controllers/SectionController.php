@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departement;
+use App\Models\NotifAdmin;
 use App\Models\NotifMahasiswa;
 use App\Models\Section;
 use App\Models\User;
@@ -13,10 +14,12 @@ class SectionController extends Controller
 {
     protected $section;
     protected $notifMahasiswa;
-    public function __construct(Section $section,NotifMahasiswa $notifMahasiswa)
+    protected $notifAdmin;
+    public function __construct(Section $section,NotifMahasiswa $notifMahasiswa,NotifAdmin $notifAdmin)
     {
         $this->section = $section;
         $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifAdmin=$notifAdmin;
     }
     public function index()
     {
@@ -25,7 +28,9 @@ class SectionController extends Controller
         $data = $this->section->ShowAdmin();
         $departementData = Departement::latest()->get();
         if (Auth::user()->role == 'admin') {
-            return view('admin.manajemen.section', compact('title', 'data', 'user', 'departementData'));
+            $notif = $this->notifAdmin->Show();
+            $count = $this->notifAdmin->Count();
+            return view('admin.manajemen.section', compact('title', 'data', 'user', 'departementData','notif','count'));
         } elseif (Auth::user()->role == 'mahasiswa') {
             $notif = $this->notifMahasiswa->Show();
             $count = $this->notifMahasiswa->Count();

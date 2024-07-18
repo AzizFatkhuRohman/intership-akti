@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class NotifMentor extends Model
 {
@@ -26,7 +27,8 @@ class NotifMentor extends Model
         return $this->create($data);
     }
     public function Show(){
-        return $this->with('mahasiswa','section','departement')->latest()->limit(5)->get();
+        $mentor = Mentor::where('user_id',Auth::user()->id)->value('id');
+        return $this->where('mentor_id',$mentor)->with('mahasiswa','section','departement')->latest()->limit(5)->get();
     }
     public function Count(){
         return $this->where('status','belum')->count();

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifAdmin;
+use App\Models\NotifDepartement;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
 use App\Models\NotifSection;
@@ -17,12 +19,16 @@ class AbsensiController extends Controller
     protected $notifMentor;
     protected $notifMahasiswa;
     protected $notifSection;
-    public function __construct(Absensi $absensi, NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa,NotifSection $notifSection)
+    protected $notifDepartement;
+    protected $notifAdmin;
+    public function __construct(Absensi $absensi, NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa,NotifSection $notifSection,NotifDepartement $notifDepartement, NotifAdmin $notifAdmin)
     {
         $this->absensi = $absensi;
         $this->notifMentor = $notifMentor;
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifSection=$notifSection;
+        $this->notifDepartement=$notifDepartement;
+        $this->notifAdmin=$notifAdmin;
     }
     public function index()
     {
@@ -46,12 +52,16 @@ class AbsensiController extends Controller
         } elseif(Auth::user()->role == 'dosen'){
             return view('dosen.manajemen.absensi',[
                 'title'=>$title,
-                'data'=>$this->absensi->ShowDosen()
+                'data'=>$this->absensi->ShowDosen(),
+                'notif'=>$this->notifAdmin->ShowDosen(),
+                'count'=>$this->notifAdmin->CountDosen()
             ]);
         } elseif (Auth::user()->role == 'departement'){
             return view('departement.manajemen.absensi',[
                 'title'=>$title,
-                'data'=>$this->absensi->ShowDepartement()
+                'data'=>$this->absensi->ShowDepartement(),
+                'notif'=>$this->notifDepartement->Show(),
+                'count'=>$this->notifDepartement->Count()
             ]);
         }
 

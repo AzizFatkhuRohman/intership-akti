@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Departement;
 use App\Models\Mentor;
+use App\Models\NotifAdmin;
 use App\Models\NotifMahasiswa;
 use App\Models\Section;
 use App\Models\User;
@@ -14,10 +15,12 @@ class MentorController extends Controller
 {
     protected $mentor;
     protected $notifMahasiswa;
-    public function __construct(Mentor $mentor,NotifMahasiswa $notifMahasiswa)
+    protected $notifAdmin;
+    public function __construct(Mentor $mentor,NotifMahasiswa $notifMahasiswa, NotifAdmin $notifAdmin)
     {
         $this->mentor = $mentor;
         $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifAdmin=$notifAdmin;
     }
     public function index()
     {
@@ -31,7 +34,9 @@ class MentorController extends Controller
             $count = $this->notifMahasiswa->Count();
             return view('mahasiswa.manajemen.mentor', compact('title', 'data', 'user', 'sectionData','departementData','notif','count'));
         } elseif (Auth::user()->role == 'admin') {
-            return view('admin.manajemen.mentor', compact('title', 'data', 'user', 'sectionData','departementData'));
+            $notif = $this->notifAdmin->Show();
+            $count = $this->notifAdmin->Count();
+            return view('admin.manajemen.mentor', compact('title', 'data', 'user', 'sectionData','departementData','notif','count'));
         }
 
     }

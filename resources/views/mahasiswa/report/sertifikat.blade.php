@@ -79,6 +79,7 @@
                                                     <form action="{{url('mahasiswa/report/sertifikat/'.$item->id)}}"
                                                         method="post" enctype="multipart/form-data">
                                                         @csrf
+                                                        @method('put')
                                                         <div class="mb-2">
                                                             <label for="exampleFormControlInput1"
                                                                 class="form-label">Unggah File</label>

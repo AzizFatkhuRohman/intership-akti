@@ -257,11 +257,8 @@
                     <div style="margin-left: 10px; margin-right: 10px;">
                         <label class="form-label">Paraf Mentor</label>
                         <center>
-                            @if ($data->komentar_mentor && $paraf)
-                            <img src="{{ public_path('assets/img/paraf/'. $paraf) }}" width="200" style="margin-bottom: 10px">
-                            @else
-                            <p style="margin-top: 65%"></p>
-                            @endif
+                            <img src="{{ public_path('paraf/'. $data->mentor->paraf) }}" width="200" style="margin-bottom: 10px">
+                            
                         </center>
                     </div>
                 </td>

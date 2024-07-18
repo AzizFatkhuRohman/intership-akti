@@ -187,6 +187,8 @@
                             <button class="btn btn-info disabled">Accept Section</button>
                             @elseif ($item->status == 'reject_sec')
                             <button class="btn btn-danger disabled">Reject Section</button>
+                            @elseif ($item->status == 'reject_dep')
+                            <button class="btn btn-danger disabled">Reject Departement</button>
                             @elseif ($item->status == 'accept_dep')
                             <button class="btn btn-info disabled">Accept Departement</button>
                             @elseif ($item->status == 'reject_sec')
@@ -220,7 +222,7 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{url('mentor/logbook/triwulan-ganjil/'.$item->id)}}"
+                                                <form action="{{url('mentor/logbook/triwulan/'.$item->id)}}"
                                                     method="post">
                                                     @method('put')
                                                     @csrf
@@ -392,7 +394,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form action="{{url('mentor/logbook/triwulan-ganjil/'.$item->id)}}" method="post"
+                                <form action="{{url('mentor/logbook/triwulan/'.$item->id)}}" method="post"
                                     id="triwulanGanjil">
                                     @csrf
                                     @method('delete')
@@ -407,7 +409,7 @@
                                 </form>
 
                                 @endif
-                                <a href="{{url('mentor/logbook/triwulan-ganjil/'.$item->id)}}" class="btn btn-info"><svg
+                                <a href="{{url('mentor/logbook/triwulan/'.$item->id)}}" class="btn btn-info"><svg
                                         xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-eye-fill text-white" viewBox="0 0 16 16">
                                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
@@ -484,4 +486,23 @@
         </div>
     </div>
 </div>
+<script>
+    function triwulanGanjil() {
+      Swal.fire({
+          title: 'Konfirmasi',
+          text: 'Apakah Anda yakin ingin menghapus ini?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ya, Hapus!',
+          cancelButtonText: 'Batal'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              document.getElementById('triwulanGanjil').submit();
+          }
+      });
+      
+  }
+  </script>
 @endsection

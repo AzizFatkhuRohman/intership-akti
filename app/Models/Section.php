@@ -48,6 +48,14 @@ class Section extends Model
     {
         return $this->hasMany(NotifSection::class);
     }
+    public function notifAdmin()
+    {
+        return $this->hasMany(NotifAdmin::class);
+    }
+    public function triwulanGanjil()
+    {
+        return $this->hasMany(TriwulanGanjil::class);
+    }
     public function ShowAdmin()
     {
         return $this->latest()->paginate(10);

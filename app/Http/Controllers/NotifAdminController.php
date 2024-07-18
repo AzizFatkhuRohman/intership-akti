@@ -4,15 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\NotifAdmin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotifAdminController extends Controller
 {
+    protected $notifAdmin;
+    public function __construct(NotifAdmin $notifAdmin){
+        $this->notifAdmin=$notifAdmin;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -34,9 +39,14 @@ class NotifAdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(NotifAdmin $notifAdmin)
+    public function show($id)
     {
-        //
+        return view('admin.notif',[
+            'title'=>'Notification',
+            'data'=>NotifAdmin::latest()->paginate(20),
+            'notif'=>$this->notifAdmin->Show(),
+            'count'=>$this->notifAdmin->Count()
+        ]);
     }
 
     /**
@@ -50,9 +60,17 @@ class NotifAdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, NotifAdmin $notifAdmin)
+    public function update($id)
     {
-        //
+        NotifAdmin::find($id)->update([
+            'status'=>'dibaca'
+        ]);
+        if (Auth::user()->role == 'admin') {
+            return redirect('admin/notification/'.Auth::user()->id);
+        } else {
+            return redirect('dosen/notification/'.Auth::user()->id);
+        }
+        
     }
 
     /**

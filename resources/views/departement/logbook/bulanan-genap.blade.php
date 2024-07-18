@@ -34,7 +34,7 @@
             <td>
               <div class="d-flex">
                 
-                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-info"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                <a href="{{url('departement/logbook/bulanan-ganjil/'.$item->id)}}" target="_blank" rel="noopener noreferrer" class="btn btn-info"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                     height="16" fill="currentColor" class="bi bi-eye-fill text-white" viewBox="0 0 16 16">
                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
                     <path

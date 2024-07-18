@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Absensi;
+use App\Exports\TriwulanBulan;
+use App\Exports\TriwulanMinggu;
+use App\Exports\TriwulanTahun;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifAdmin;
+use App\Models\NotifDepartement;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
 use App\Models\NotifSection;
@@ -13,6 +17,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TriwulanGanjilController extends Controller
 {
@@ -20,12 +25,16 @@ class TriwulanGanjilController extends Controller
     protected $notifMentor;
     protected $notifMahasiswa;
     protected $notifSection;
-    public function __construct(TriwulanGanjil $triwulanGanjil,NotifMentor $notifMentor, NotifMahasiswa $notifMahasiswa,NotifSection $notifSection)
+    protected $notifDepartement;
+    protected $notifAdmin;
+    public function __construct(TriwulanGanjil $triwulanGanjil,NotifMentor $notifMentor, NotifMahasiswa $notifMahasiswa,NotifSection $notifSection,NotifDepartement $notifDepartement,NotifAdmin $notifAdmin)
     {
         $this->triwulanGanjil = $triwulanGanjil;
         $this->notifMentor=$notifMentor;
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifSection=$notifSection;
+        $this->notifDepartement=$notifDepartement;
+        $this->notifAdmin=$notifAdmin;
     }
     public function index()
     {
@@ -50,12 +59,23 @@ class TriwulanGanjilController extends Controller
         } elseif(Auth::user()->role == 'dosen'){
             return view('dosen.logbook.triwulan-ganjil',[
                 'title'=>$title,
-                'data'=>$this->triwulanGanjil->ShowDosen()
+                'data'=>$this->triwulanGanjil->ShowDosen(),
+                'notif'=>$this->notifAdmin->ShowDosen(),
+                'count'=>$this->notifAdmin->CountDosen()
             ]);
         }elseif (Auth::user()->role == 'departement'){
             return view('departement.logbook.triwulan-ganjil',[
                 'title'=>$title,
-                'data'=>$this->triwulanGanjil->ShowDepartement()
+                'data'=>$this->triwulanGanjil->ShowDepartement(),
+                'notif'=>$this->notifDepartement->Show(),
+                'count'=>$this->notifDepartement->Count()
+            ]);
+        }elseif(Auth::user()->role == 'admin'){
+            return view('admin.logbook.triwulan-ganjil',[
+                'title'=>$title,
+                'data'=>TriwulanGanjil::latest()->paginate(10),
+                'notif'=>$this->notifAdmin->Show(),
+                'count'=>$this->notifAdmin->Count()
             ]);
         }
 
@@ -99,6 +119,24 @@ class TriwulanGanjilController extends Controller
             'skill' => $request->skill,
             'knowledge' => $request->knowledge
         ]);
+        $this->notifMahasiswa->Store([
+            'mahasiswa_id'=>$request->mahasiswa_id,
+            'mentor_id'=>$mentor_id->id,
+            'content'=>'Logbook Triwulan dibuat'
+        ]);
+        $this->notifSection->Store([
+            'mentor_id'=>$mentor_id->id,
+            'section_id'=>$mentor_id->section_id,
+            'departement_id'=>$mentor_id->departement_id,
+            'content'=>'Logbook Triwulan dibuat oleh '.Auth::user()->nama
+        ]);
+        $this->notifDepartement->Store([
+            'mahasiswa_id'=>$request->mahasiswa_id,
+            'mentor_id'=>$mentor_id->id,
+            'section_id'=>$mentor_id->section_id,
+            'departement_id'=>$mentor_id->departement_id,
+            'content'=>'Logbook Triwulan dibuat oleh '.Auth::user()->nama
+        ]);
         return back()->with('sukses', 'Data berhasil ditambahkan');
     }
 
@@ -107,7 +145,7 @@ class TriwulanGanjilController extends Controller
      */
     public function show($id)
     {
-        $data = TriwulanGanjil::where('id', $id)->get();
+        $data = TriwulanGanjil::with('mahasiswa','mentor','section','departement')->find($id)->first();
         $pdf = Pdf::loadView('cetak.triwulan-ganjil', compact('data'));
         $pdf->setPaper('A4', 'portrait');
         return $pdf->stream(Faker::create()->randomNumber(5, true) . '-triwulan-ganjil.pdf');
@@ -126,6 +164,7 @@ class TriwulanGanjilController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $triwulan = TriwulanGanjil::find($id)->first();
         if (Auth::user()->role == 'mentor') {
             $this->triwulanGanjil->Edit($id, [
                 'actual_safety' => $request->actual_safety,
@@ -146,17 +185,48 @@ class TriwulanGanjilController extends Controller
                 'skill' => $request->skill,
                 'knowledge' => $request->knowledge
             ]);
-            return redirect('mentor/logbook/triwulan-ganjil')->with('sukses', 'Data berhasil diubah');
+            return redirect('mentor/logbook/triwulan')->with('sukses', 'Data berhasil diubah');
         } elseif (Auth::user()->role == 'section') {
             $this->triwulanGanjil->Edit($id, [
                 'status' => $request->status
             ]);
-            return redirect('section/logbook/triwulan-ganjil')->with('sukses', 'Data berhasil diubah');
+            if ($request->status == 'accept_sec') {
+                $status = 'Accept';
+            } else {
+                $status = 'Reject';
+            }
+            $this->notifMentor->Store([
+                'mahasiswa_id'=>$triwulan->mahasiswa_id,
+                'mentor_id'=>$triwulan->mentor_id,
+                'section_id'=>$triwulan->section_id,
+                'departement_id'=>$triwulan->departement_id,
+                'content'=>'Logbook Triwulan telah di'.$status.' oleh section'
+            ]);
+            return redirect('section/logbook/triwulan')->with('sukses', 'Data berhasil diubah');
         } elseif (Auth::user()->role == 'departement') {
             $this->triwulanGanjil->Edit($id, [
                 'status' => $request->status
             ]);
-            return redirect('departement/logbook/triwulan-ganjil')->with('sukses', 'Data berhasil diubah');
+            if ($request->status == 'accept_dep') {
+                $status = 'Accept';
+            } else {
+                $status = 'Reject';
+            }
+            
+            $this->notifMentor->Store([
+                'mahasiswa_id'=>$triwulan->mahasiswa_id,
+                'mentor_id'=>$triwulan->mentor_id,
+                'section_id'=>$triwulan->section_id,
+                'departement_id'=>$triwulan->departement_id,
+                'content'=>'Logbook Triwulan telah di'.$status.' oleh departement'
+            ]);
+            $this->notifSection->Store([
+                'mentor_id'=>$triwulan->mentor_id,
+                'section_id'=>$triwulan->section_id,
+                'departement_id'=>$triwulan->departement_id,
+                'content'=>'Logbook Triwulan telah di'.$status.' oleh departement'
+            ]);
+            return redirect('departement/logbook/triwulan')->with('sukses', 'Data berhasil diubah');
         }
 
     }
@@ -167,7 +237,7 @@ class TriwulanGanjilController extends Controller
     public function destroy($id)
     {
         $this->triwulanGanjil->Hapus($id);
-        return redirect('mentor/logbook/triwulan-ganjil')->with('sukses', 'Data berhasil dihapus');
+        return redirect('mentor/logbook/triwulan')->with('sukses', 'Data berhasil dihapus');
     }
     public function search(Request $request){
         $title = 'Triwulan';
@@ -199,7 +269,13 @@ class TriwulanGanjilController extends Controller
         }
         
     }
-    public function test(){
-        return view('cetak.evaluasi-ganjil');
+    public function export(Request $request){
+        if ($request->waktu == 'minggu') {
+            return Excel::download(new TriwulanMinggu,'Triwulan.xlsx');
+        } elseif ($request->waktu == 'bulan')  {
+            return Excel::download(new TriwulanBulan,'Triwulan.xlsx');
+        }else{
+            return Excel::download(new TriwulanTahun,'Triwulan.xlsx');
+        }
     }
 }

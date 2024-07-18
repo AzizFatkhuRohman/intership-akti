@@ -29,4 +29,7 @@ class Ppt extends Model
     {
         return $this->create($data);
     }
+    public function Edit($id,$data){
+        return $this->find($id)->update($data);
+    }
 }

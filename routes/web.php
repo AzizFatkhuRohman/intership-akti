@@ -9,6 +9,8 @@ use App\Http\Controllers\EvaluasiGenapController;
 use App\Http\Controllers\LogbookMingguanController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MentorController;
+use App\Http\Controllers\NotifAdminController;
+use App\Http\Controllers\NotifDepartementController;
 use App\Http\Controllers\NotifMahasiswaController;
 use App\Http\Controllers\NotifMentorController;
 use App\Http\Controllers\NotifSectionController;
@@ -20,8 +22,6 @@ use App\Http\Controllers\SertifikatController;
 use App\Http\Controllers\TriwulanGanjilController;
 use App\Http\Controllers\TugasAkhirController;
 use App\Http\Controllers\UserController;
-use App\Models\EvaluasiGanjil;
-use App\Models\EvaluasiGenap;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('admin')->group(function () {
             Route::resource('pengajuan-mentor',PindahMentorController::class);
             Route::get('dashboard', [Controller::class, 'admin']);
+            Route::resource('notification',NotifAdminController::class);
             Route::prefix('manajemen')->group(function () {
                 Route::resource('pengguna', UserController::class);
                 Route::resource('mahasiswa', MahasiswaController::class);
@@ -60,12 +61,29 @@ Route::middleware('auth')->group(function () {
                 Route::resource('departement', DepartementController::class);
                 Route::resource('dosen', DosenController::class);
             });
+            Route::prefix('report')->group(function () {
+                Route::resource('ppt', PptController::class);
+                Route::resource('tugas-akhir', TugasAkhirController::class);
+                Route::resource('report-a3', ReportA3Controller::class);
+                Route::resource('sertifikat', SertifikatController::class);
+            });
+            Route::prefix('logbook')->group(function () {
+                Route::resource('mingguan', LogbookMingguanController::class);
+                Route::resource('bulanan-ganjil',EvaluasiGanjilController::class);
+                Route::resource('bulanan-genap',EvaluasiGenapController::class);
+                Route::resource('triwulan', TriwulanGanjilController::class);
+                Route::post('triwulan/export',[TriwulanGanjilController::class,'export']);
+                Route::post('mingguan/export',[LogbookMingguanController::class,'export']);
+            });
         });
     });
 
     Route::middleware('role:departement')->group(function () {
         Route::prefix('departement')->group(function () {
             Route::get('dashboard', [Controller::class, 'departement']);
+            Route::get('profil/{id}', [Controller::class, 'profil']);
+            Route::put('profil/{id}', [Controller::class, 'profilDepartement']);
+            Route::resource('notification',NotifDepartementController::class);
             Route::prefix('manajemen')->group(function () {
                 Route::resource('mahasiswa', MahasiswaController::class);
                 Route::resource('absensi', AbsensiController::class);
@@ -88,6 +106,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:section')->group(function () {
         Route::prefix('section')->group(function () {
             Route::get('dashboard', [Controller::class, 'section']);
+            Route::get('profil/{id}', [Controller::class, 'profil']);
+            Route::put('profil/{id}', [Controller::class, 'profilSection']);
             Route::resource('notification',NotifSectionController::class);
             Route::prefix('manajemen')->group(function () {
                 Route::resource('mahasiswa', MahasiswaController::class);
@@ -170,6 +190,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:dosen')->group(function () {
         Route::prefix('dosen')->group(function () {
             Route::get('dashboard', [Controller::class, 'dosen']);
+            Route::resource('notification',NotifAdminController::class);
             Route::prefix('manajemen')->group(function () {
                 Route::resource('mahasiswa', MahasiswaController::class);
                 Route::resource('absensi', AbsensiController::class);

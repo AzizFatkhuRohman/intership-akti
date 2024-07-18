@@ -44,5 +44,8 @@ class TugasAkhir extends Model
         $mahasiswa_id = Mahasiswa::where('dosen_id',$dosen_id)->pluck('id');
         return $this->whereIn('mahasiswa_id',$mahasiswa_id)->latest()->paginate(10);
     }
+    public function Edit($id,$data){
+        return $this->find($id)->update($data);
+    }
 
 }

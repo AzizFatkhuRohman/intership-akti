@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\NotifAdmin;
+use App\Models\NotifDepartement;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
 use App\Models\NotifSection;
@@ -16,11 +18,15 @@ class ReportA3Controller extends Controller
     protected $notifMentor;
     protected $notifMahasiswa;
     protected $notifSection;
-    public function __construct(ReportA3 $reportA3,NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa,NotifSection $notifSection){
+    protected $notifDepartement;
+    protected $notifAdmin;
+    public function __construct(ReportA3 $reportA3,NotifMentor $notifMentor,NotifMahasiswa $notifMahasiswa,NotifSection $notifSection,NotifDepartement $notifDepartement,NotifAdmin $notifAdmin){
         $this->reportA3=$reportA3;
         $this->notifMentor=$notifMentor;
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifSection = $notifSection;
+        $this->notifDepartement=$notifDepartement;
+        $this->notifAdmin=$notifAdmin;
     }
     public function index()
     {
@@ -44,7 +50,25 @@ class ReportA3Controller extends Controller
         }elseif(Auth::user()->role == 'departement'){
             return view('departement.report.report-a3',[
                 'title'=>$title,
-                'data'=>$this->reportA3->ShowDepartement()
+                'data'=>$this->reportA3->ShowDepartement(),
+                'notif'=>$this->notifDepartement->Show(),
+                'count'=>$this->notifDepartement->Count()
+            ]);
+        }
+        elseif(Auth::user()->role == 'dosen'){
+            return view('dosen.report.report-a3',[
+                'title'=>$title,
+                'data'=>$this->reportA3->ShowDosen(),
+                'notif'=>$this->notifAdmin->ShowDosen(),
+                'count'=>$this->notifAdmin->CountDosen()
+            ]);
+        }
+        else{
+            return view('admin.report.report-a3',[
+                'title'=>$title,
+                'data'=>ReportA3::latest()->paginate(10),
+                'notif'=>$this->notifAdmin->Show(),
+                'count'=>$this->notifAdmin->Count()
             ]);
         }
     }
@@ -73,6 +97,13 @@ class ReportA3Controller extends Controller
             'departement_id'=>$mahasiswa_id->departement_id,
             'nama_file' => $nama_file
         ]);
+        $this->notifAdmin->Store([
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id' => $mahasiswa_id->mentor_id,
+            'section_id' => $mahasiswa_id->section_id,
+            'departement_id' => $mahasiswa_id->departement_id,
+            'content'=>Auth::user()->nama.' Telah unggah Report A3'
+        ]);
         return back()->with('sukses', 'Data berhasil ditambahkan');
     }
 
@@ -95,9 +126,27 @@ class ReportA3Controller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ReportA3 $reportA3)
+    public function update(Request $request, $id)
     {
-        //
+        $mahasiswa_id = Mahasiswa::where('user_id',Auth::user()->id)->first();
+        $file = $request->file('nama_file');
+        $nama_file = $file->hashName();
+        $file->move(public_path('a3'), $nama_file);
+        $this->reportA3->Edit($id,[
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id'=>$mahasiswa_id->mentor_id,
+            'section_id'=>$mahasiswa_id->section_id,
+            'departement_id'=>$mahasiswa_id->departement_id,
+            'nama_file' => $nama_file
+        ]);
+        $this->notifAdmin->Store([
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id' => $mahasiswa_id->mentor_id,
+            'section_id' => $mahasiswa_id->section_id,
+            'departement_id' => $mahasiswa_id->departement_id,
+            'content'=>Auth::user()->nama.' Telah unggah Report A3'
+        ]);
+        return redirect('mahasiswa/report/report-a3')->with('sukses', 'Data berhasil diubah');
     }
 
     /**

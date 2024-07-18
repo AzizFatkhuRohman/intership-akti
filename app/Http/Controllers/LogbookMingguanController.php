@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LogbookBulan;
+use App\Exports\LogbookMinggu;
+use App\Exports\LogbookTahun;
 use App\Models\LogbookMingguan;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifAdmin;
+use App\Models\NotifDepartement;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
 use App\Models\NotifSection;
@@ -12,6 +17,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LogbookMingguanController extends Controller
 {
@@ -19,12 +25,16 @@ class LogbookMingguanController extends Controller
     protected $notifMahasiswa;
     protected $notifMentor;
     protected $notifSection;
-    public function __construct(LogbookMingguan $logbookMingguan, NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor,NotifSection $notifSection)
+    protected $notifDepartement;
+    protected $notifAdmin;
+    public function __construct(LogbookMingguan $logbookMingguan, NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor,NotifSection $notifSection,NotifDepartement $notifDepartement,NotifAdmin $notifAdmin)
     {
         $this->logbookMingguan = $logbookMingguan;
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifMentor=$notifMentor;
         $this->notifSection=$notifSection;
+        $this->notifDepartement=$notifDepartement;
+        $this->notifAdmin=$notifAdmin;
     }
     /**
      * Display a listing of the resource.
@@ -33,16 +43,25 @@ class LogbookMingguanController extends Controller
     {
         $title = 'Logbook Mingguan';
         if (Auth::user()->role == 'admin') {
-
+            return view('admin.logbook.mingguan',[
+                'title'=>$title,
+                'data'=>LogbookMingguan::latest()->paginate(10),
+                'notif'=>$this->notifAdmin->Show(),
+                'count'=>$this->notifAdmin->Count()
+            ]);
         } elseif (Auth::user()->role == 'dosen') {
             return view('dosen.logbook.mingguan',[
                 'title'=>$title,
-                'data'=>$this->logbookMingguan->ShowDosen()
+                'data'=>$this->logbookMingguan->ShowDosen(),
+                'notif'=>$this->notifAdmin->ShowDosen(),
+                'count'=>$this->notifAdmin->CountDosen()
             ]);
         } elseif (Auth::user()->role == 'departement') {
             return view('departement.logbook.mingguan',[
                 'title'=>$title,
-                'data'=>$this->logbookMingguan->ShowDepartement()
+                'data'=>$this->logbookMingguan->ShowDepartement(),
+                'notif'=>$this->notifDepartement->Show(),
+                'count'=>$this->notifDepartement->Count()
             ]);
         } elseif (Auth::user()->role == 'mahasiswa') {
             $data = $this->logbookMingguan->ShowMahasiswa();
@@ -80,7 +99,9 @@ class LogbookMingguanController extends Controller
                 'tool_used' => $request->tool_used,
                 'safety_key_point' => $request->safety_key_point,
                 'problem_solf' => $request->problem_solf,
-                'hyarihatto' => $request->hyarihatto
+                'hyarihatto' => $request->hyarihatto,
+                'point_to_remember'=>$request->point_to_remember,
+                'self_evaluation'=>$request->self_evaluation
             ]);
         } else {
             $gambar = $request->file('gambar');
@@ -98,7 +119,9 @@ class LogbookMingguanController extends Controller
                 'tool_used' => $request->tool_used,
                 'safety_key_point' => $request->safety_key_point,
                 'problem_solf' => $request->problem_solf,
-                'hyarihatto' => $request->hyarihatto
+                'hyarihatto' => $request->hyarihatto,
+                'point_to_remember'=>$request->point_to_remember,
+                'self_evaluation'=>$request->self_evaluation
             ]);
         }
         $this->notifMentor->Store([
@@ -138,9 +161,8 @@ class LogbookMingguanController extends Controller
 
         if (Auth::user()->role == 'mentor') {
             $this->logbookMingguan->Edit($id, [
-                'point_to_remember' => $request->point_to_remember,
                 'status' => $request->status,
-                'self_evaluation' => $request->self_evaluation,
+                'mentor_evaluation' => $request->mentor_evaluation,
                 'komentar' => $request->komentar
             ]);
             $mahasiswa_id = LogbookMingguan::find($id)->value('mahasiswa_id');
@@ -160,7 +182,9 @@ class LogbookMingguanController extends Controller
                     'tool_used' => $request->tool_used,
                     'safety_key_point' => $request->safety_key_point,
                     'problem_solf' => $request->problem_solf,
-                    'hyarihatto' => $request->hyarihatto
+                    'hyarihatto' => $request->hyarihatto,
+                    'point_to_remember'=>$request->point_to_remember,
+                'self_evaluation'=>$request->self_evaluation
                 ]);
             } else {
                 $gambar = $request->file('gambar');
@@ -174,7 +198,9 @@ class LogbookMingguanController extends Controller
                     'tool_used' => $request->tool_used,
                     'safety_key_point' => $request->safety_key_point,
                     'problem_solf' => $request->problem_solf,
-                    'hyarihatto' => $request->hyarihatto
+                    'hyarihatto' => $request->hyarihatto,
+                    'point_to_remember'=>$request->point_to_remember,
+                'self_evaluation'=>$request->self_evaluation
                 ]);
             }
             $mahasiswa = Mahasiswa::where('user_id',Auth::user()->id)->first();
@@ -192,9 +218,10 @@ class LogbookMingguanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LogbookMingguan $logbookMingguan)
+    public function destroy($id)
     {
-        //
+        LogbookMingguan::find($id)->delete();
+        return redirect('mahasiswa/logbook/mingguan')->with('sukses','Data berhasil dihapus');
     }
     public function search(Request $request){
         $title = 'Logbook Mingguan';
@@ -225,5 +252,14 @@ class LogbookMingguanController extends Controller
             ]);
         }
         
+    }
+    public function export(Request $request){
+        if ($request->waktu == 'minggu') {
+            return Excel::download(new LogbookMinggu,'Logbook.xlsx');
+        } elseif ($request->waktu == 'bulan')  {
+            return Excel::download(new LogbookBulan,'Logbook.xlsx');
+        }else{
+            return Excel::download(new LogbookTahun,'Logbook.xlsx');
+        }
     }
 }

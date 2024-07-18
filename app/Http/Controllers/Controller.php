@@ -8,6 +8,8 @@ use App\Models\Dosen;
 use App\Models\LogbookMingguan;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifAdmin;
+use App\Models\NotifDepartement;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
 use App\Models\NotifSection;
@@ -28,7 +30,9 @@ class Controller extends BaseController
     protected $notifMahasiswa;
     protected $notifMentor;
     protected $notifSection;
-    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor,NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor,NotifSection $notifSection)
+    protected $notifDepartement;
+    protected $notifAdmin;
+    public function __construct(Mahasiswa $mahasiswa, Dosen $dosen, Mentor $mentor,NotifMahasiswa $notifMahasiswa,NotifMentor $notifMentor,NotifSection $notifSection,NotifDepartement $notifDepartement,NotifAdmin $notifAdmin)
     {
         $this->mahasiswa = $mahasiswa;
         $this->dosen = $dosen;
@@ -36,6 +40,8 @@ class Controller extends BaseController
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifMentor=$notifMentor;
         $this->notifSection=$notifSection;
+        $this->notifDepartement=$notifDepartement;
+        $this->notifAdmin=$notifAdmin;
     }
     public function admin()
     {
@@ -44,13 +50,30 @@ class Controller extends BaseController
         $mentor = Mentor::count();
         $section = Section::count();
         $departement = Departement::count();
-        return view('admin.index', compact('title','mahasiswa','mentor','section','departement'));
+        $notif = $this->notifAdmin->Show();
+        $count= $this->notifAdmin->Count();
+        $krw1 = Departement::where('lokasi', 'krw1')
+        ->withCount('mahasiswa')
+        ->first();
+        $krw2 = Departement::where('lokasi', 'krw2')
+        ->withCount('mahasiswa')
+        ->first();
+        $krw3 = Departement::where('lokasi', 'krw3')
+        ->withCount('mahasiswa')
+        ->first();
+        $sunter1 = Departement::where('lokasi', 'sunter1')
+        ->withCount('mahasiswa')
+        ->first();
+        $sunter2 = Departement::where('lokasi', 'sunter2')
+        ->withCount('mahasiswa')
+        ->first();
+        return view('admin.index', compact('title','mahasiswa','mentor','section','departement','notif','count','krw1','krw2','krw3','sunter1','sunter2'));
     }
     public function mahasiswa()
     {
         $title = 'Dashboard';
         $notif = $this->notifMahasiswa->Show();
-            $count = $this->notifMahasiswa->Count();
+        $count = $this->notifMahasiswa->Count();
         $mahasiswa = Mahasiswa::where('user_id', Auth::user()->id)->first();
         $dosen = Dosen::latest()->get();
         $mentor = Mentor::latest()->get();
@@ -127,7 +150,9 @@ class Controller extends BaseController
     }
     public function dosen(){
         $title = 'Dashboard';
-        return view('dosen.index',compact('title'));
+        $notif = $this->notifAdmin->ShowDosen();
+        $count = $this->notifAdmin->CountDosen();
+        return view('dosen.index',compact('title','notif','count'));
     }
     public function mentor()
     {
@@ -273,6 +298,8 @@ class Controller extends BaseController
     }
     public function departement(){
         $title = 'Dashboard';
+        $notif = $this->notifDepartement->Show();
+        $count = $this->notifDepartement->Count();
         $departement_id = Departement::where('user_id',Auth::user()->id)->value('id');
         $mahasiswa = Mahasiswa::where('departement_id',$departement_id)->count();
         $logbook = LogbookMingguan::where('departement_id',$departement_id)->count();
@@ -337,7 +364,7 @@ class Controller extends BaseController
                 ->where('departement_id', $departement_id)
                 ->whereMonth('created_at', 12)
                 ->count();
-        return view('departement.index', compact('title','mahasiswa','absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs'));
+        return view('departement.index', compact('title','mahasiswa','absensi', 'logbook', 'janabs', 'febabs', 'marabs', 'aprabs', 'meiabs', 'junabs', 'julabs', 'agusabs', 'sepabs', 'oktabs', 'novabs', 'desabs','notif','count'));
     }
     public function profil($id)
     {
@@ -348,12 +375,19 @@ class Controller extends BaseController
         } elseif (Auth::user()->role == 'dosen') {
 
         } elseif (Auth::user()->role == 'departement') {
-
+            return view('departement.profil',[
+                'title'=>$title,
+                'data'=>Departement::with('user')->where('user_id',Auth::user()->id)->first(),
+                'notif'=>$this->notifDepartement->Show(),
+                'count'=>$this->notifDepartement->Count()
+            ]);
         } elseif (Auth::user()->role == 'mahasiswa') {
             $dataDosen = Dosen::latest()->get();
             $dataMentor = Mentor::latest()->get();
             $data = $this->mahasiswa->ShowProfil($id);
-            return view('mahasiswa.profil', compact('title', 'data', 'dataDosen', 'dataMentor'));
+            $notif= $this->notifMahasiswa->Show();
+            $count=$this->notifMahasiswa->Count();
+            return view('mahasiswa.profil', compact('title', 'data', 'dataDosen', 'dataMentor','notif','count'));
         } elseif (Auth::user()->role == 'mentor') {
             return view('mentor.profil',[
                 'title'=>$title,
@@ -362,7 +396,12 @@ class Controller extends BaseController
                 'count'=>$this->notifMentor->Count()
             ]);
         } elseif (Auth::user()->role == 'section') {
-
+            return view('section.profil',[
+                'title'=>$title,
+                'data'=>Section::with('departement','user')->where('user_id',Auth::user()->id)->first(),
+                'notif'=>$this->notifSection->Show(),
+                'count'=>$this->notifSection->Count()
+            ]);
         }
     }
     public function postProfil(Request $request)
@@ -447,4 +486,74 @@ class Controller extends BaseController
     
         return redirect('mahasiswa/profil/'.$id)->with('sukses', 'Data berhasil diubah');
     }
+    public function profilSection(Request $request, $id)
+    {
+    
+        // Ambil data dari request
+        $dataUser = [
+            'nama' => $request->nama,
+        ];
+    
+        $dataMentor = [
+            'nama_section'=>$request->nama_section
+        ];
+    
+        // Handle foto profil jika diunggah
+        if ($request->hasFile('photo')) {
+            $profil = $request->file('photo');
+            $namaProfil = $profil->hashName();
+            $profil->move(public_path('profil'), $namaProfil);
+            $dataUser['photo'] = $namaProfil;
+        }
+    
+        // Handle paraf jika diunggah
+        if ($request->hasFile('paraf')) {
+            $paraf = $request->file('paraf');
+            $namaParaf = $paraf->hashName();
+            $paraf->move(public_path('paraf'), $namaParaf);
+            $dataMentor['paraf'] = $namaParaf;
+        }
+    
+        // Update data user dan mentor
+        User::find($id)->update($dataUser);
+        Section::where('user_id', $id)->update($dataMentor);
+    
+        return redirect('section/profil/'.$id)->with('sukses', 'Data berhasil diubah');
+    }
+    public function profilDepartement(Request $request, $id)
+    {
+    
+        // Ambil data dari request
+        $dataUser = [
+            'nama' => $request->nama,
+        ];
+    
+        $dataMentor = [
+            'nama_departement'=>$request->nama_departement,
+            'lokasi'=>$request->lokasi
+        ];
+    
+        // Handle foto profil jika diunggah
+        if ($request->hasFile('photo')) {
+            $profil = $request->file('photo');
+            $namaProfil = $profil->hashName();
+            $profil->move(public_path('profil'), $namaProfil);
+            $dataUser['photo'] = $namaProfil;
+        }
+    
+        // Handle paraf jika diunggah
+        if ($request->hasFile('paraf')) {
+            $paraf = $request->file('paraf');
+            $namaParaf = $paraf->hashName();
+            $paraf->move(public_path('paraf'), $namaParaf);
+            $dataMentor['paraf'] = $namaParaf;
+        }
+    
+        // Update data user dan mentor
+        User::find($id)->update($dataUser);
+        Departement::where('user_id', $id)->update($dataMentor);
+    
+        return redirect('departement/profil/'.$id)->with('sukses', 'Data berhasil diubah');
+    }
+
 }

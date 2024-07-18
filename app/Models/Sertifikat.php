@@ -39,4 +39,12 @@ class Sertifikat extends Model
         $departement_id = Departement::where('user_id', Auth::user()->id)->value('id');
         return $this->where('departement_id', $departement_id)->latest()->paginate(10);
     }
+    public function Edit($id,$data){
+        return $this->find($id)->update($data);
+    }
+    public function ShowDosen(){
+        $dosen = Dosen::where('user_id',Auth::user()->id)->value('id');
+        $mahasiswa = Mahasiswa::where('dosen_id',$dosen)->pluck('id');
+        return $this->whereIn('mahasiswa_id',$mahasiswa)->latest()->paginate(10);
+    }
 }

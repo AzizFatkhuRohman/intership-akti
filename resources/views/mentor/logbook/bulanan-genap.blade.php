@@ -171,7 +171,7 @@
                 </div>
                 <b>D.2. PEKERJAAN</b>
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"><b>D.2.1. Motivasi melakukan pekerjaan</b></label>
+                  <label for="exampleFormControlInput1" class="form-label"><b>D.2.1. Konsisten terhadap motivasi melakukan pekerjaan</b></label>
                   <select class="form-select" aria-label="Default select example" name="motivasi">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -180,7 +180,7 @@
                   </select>
                 </div>
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"><b>D.2.2. Penyelesaian pekerjaan</b></label>
+                  <label for="exampleFormControlInput1" class="form-label"><b>D.2.2. Konsisten Penyelesaian pekerjaan</b></label>
                   <select class="form-select" aria-label="Default select example" name="penyelesaian">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -189,7 +189,7 @@
                   </select>
                 </div>
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"><b>D.2.3. Karakteristik hasil kerja</b></label>
+                  <label for="exampleFormControlInput1" class="form-label"><b>D.2.3. Konsisten karakteristik hasil kerja</b></label>
                   <select class="form-select" aria-label="Default select example" name="karakteristik">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -264,8 +264,8 @@
                 </div>
                 <b>F2. DAYA PIKIR</b>
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"><b>F.2.1. Mindset</b></label>
-                  <select class="form-select" aria-label="Default select example" name="mindset">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.2.1. Inisiatif</b></label>
+                  <select class="form-select" aria-label="Default select example" name="inisiatif">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -274,8 +274,26 @@
                 </div>
                 <b>F3. ETIKA KERJA</b>
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"><b>F.3.1. Kepribadian</b></label>
-                  <select class="form-select" aria-label="Default select example" name="pribadi">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.3.1. Disiplin</b></label>
+                  <select class="form-select" aria-label="Default select example" name="disiplin">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.3.2. Tanggung Jawab</b></label>
+                  <select class="form-select" aria-label="Default select example" name="tanggung_jawab">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.3.3. Kerja Sama</b></label>
+                  <select class="form-select" aria-label="Default select example" name="kerja_sama">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -320,8 +338,8 @@
                 </div>
                 <b>F.8. GCRC TRAINING</b>
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"><b>F.8.1. TJI</b></label>
-                  <select class="form-select" aria-label="Default select example" name="tji">
+                  <label for="exampleFormControlInput1" class="form-label"><b>F.8.1. Role Training</b></label>
+                  <select class="form-select" aria-label="Default select example" name="training">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -802,17 +820,17 @@
                       </div>
                     </div>
                   </div>
-                <form action="{{url('mentor/logbook/bulanan-ganjil/'.$item->id)}}" method="post" id="evaluasiganjil">
+                <form action="{{url('mentor/logbook/bulanan-genap/'.$item->id)}}" method="post" id="evaluasigenap">
                 @csrf
                 @method('delete')
-                <button type="submit" class="btn btn-danger" onclick="evaluasiganjil()">
+                <button type="submit" class="btn btn-danger" onclick="evaluasigenap()">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill text-white" viewBox="0 0 16 16">
                     <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                   </svg>
                 </button>
                 </form>
                 @endif
-                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-info"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                <a href="{{url('mentor/logbook/bulanan-genap/'.$item->id)}}" target="_blank" rel="noopener noreferrer" class="btn btn-info"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                     height="16" fill="currentColor" class="bi bi-eye-fill text-white" viewBox="0 0 16 16">
                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
                     <path
@@ -888,4 +906,23 @@
     </div>
   </div>
 </div>
+<script>
+  function evaluasigenap() {
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Apakah Anda yakin ingin menghapus ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('evaluasigenap').submit();
+        }
+    });
+    
+}
+</script>
 @endsection

@@ -83,92 +83,34 @@
                                                             id="exampleFormControlInput1"
                                                             value="{{$item->mahasiswa->user->nama}}" readonly>
                                                     </div>
-                                                    <div class="">
+                                                    <div class="col-6">
                                                         <label for="exampleFormControlInput1"
                                                             class="form-label">Status</label>
-                                                        <select class="select" aria-label="Default select example"
+                                                        <select class="form-select" aria-label="Default select example"
                                                             name="status">
-                                                            <option value=""></option>
+                                                            <option value="{{$item->status}}">{{$item->status}}</option>
                                                             <option value="accept">accept</option>
                                                             <option value="reject">reject</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-6">
-                                                        <label for="exampleFormControlInput1"
-                                                            class="form-label">Minggu</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleFormControlInput1" value="{{$item->minggu}}"
-                                                            readonly>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <label for="exampleFormControlInput1"
-                                                            class="form-label">Bulan</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleFormControlInput1" value="{{$item->bulan}}"
-                                                            readonly>
-                                                    </div>
-                                                    <div class="">
-                                                        <label for="exampleFormControlTextarea1"
-                                                            class="form-label">Keterangan</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea1"
-                                                            rows="3" readonly>{{$item->keterangan}}</textarea>
-                                                    </div>
-                                                    @if ($item->gambar != null)
-                                                    <div>
-                                                        <img src="{{asset('logbook_mingguan/'.$item->gambar)}}"
-                                                            class="rounded mx-auto d-block" alt="logbook{{$item->id}}"
-                                                            width="50%">
-                                                    </div>
-                                                    @endif
-                                                    <div class="col-6">
-                                                        <label for="exampleFormControlInput1" class="form-label">Tool
-                                                            used</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleFormControlInput1" value="{{$item->tool_used}}"
-                                                            readonly>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <label for="exampleFormControlInput1" class="form-label">Safety
-                                                            key point</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleFormControlInput1"
-                                                            value="{{$item->safety_key_point}}" readonly>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <label for="exampleFormControlInput1" class="form-label">Problem
-                                                            solf</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleFormControlInput1"
-                                                            value="{{$item->problem_solf}}" readonly>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <label for="exampleFormControlInput1"
-                                                            class="form-label">Hyarihatto</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleFormControlInput1" value="{{$item->hyarihatto}}"
-                                                            readonly>
-                                                    </div>
-                                                    
-                                                    <div class="col-6">
-                                                        <label for="exampleFormControlInput1" class="form-label">Self
-                                                            evaluation</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleFormControlInput1"
-                                                            value="{{$item->self_evaluation}}" name="self_evaluation">
-                                                    </div>
-                                                    <div class="">
-                                                        <label for="exampleFormControlInput1" class="form-label">Point
-                                                            to remember</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleFormControlInput1"
-                                                            value="{{$item->point_to_remember}}"
-                                                            name="point_to_remember">
+                                                        <label for="exampleFormControlInput1" class="form-label">Mentor
+                                                            Evaluation</label>
+                                                        <select class="form-select" aria-label="Default select example"
+                                                            name="mentor_evaluation">
+                                                            <option value="{{$item->mentor_evaluation}}">{{$item->mentor_evaluation}}</option>
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                        </select>
                                                     </div>
                                                     <div class="">
                                                         <label for="exampleFormControlTextarea1"
                                                             class="form-label">Komentar</label>
                                                         <textarea class="form-control" id="exampleFormControlTextarea2"
-                                                            rows="3" name="komentar">{{$item->komentar}}</textarea>
+                                                            rows="3" name="komentar"
+                                                            required>{{$item->komentar}}</textarea>
                                                     </div>
                                                 </div>
                                         </div>

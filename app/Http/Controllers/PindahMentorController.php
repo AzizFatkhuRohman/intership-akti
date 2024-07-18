@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifAdmin;
 use App\Models\NotifMahasiswa;
 use App\Models\PindahMentor;
 use Illuminate\Http\Request;
@@ -13,9 +14,11 @@ class PindahMentorController extends Controller
 {
     protected $pindahMentor;
     protected $notifMahasiswa;
-    public function __construct(PindahMentor $pindahMentor,NotifMahasiswa $notifMahasiswa){
+    protected $notifAdmin;
+    public function __construct(PindahMentor $pindahMentor,NotifMahasiswa $notifMahasiswa,NotifAdmin $notifAdmin){
         $this->pindahMentor=$pindahMentor;
         $this->notifMahasiswa=$notifMahasiswa;
+        $this->notifAdmin=$notifAdmin;
     }
     public function index()
     {
@@ -29,7 +32,9 @@ class PindahMentorController extends Controller
         } elseif (Auth::user()->role == 'admin')  {
             $data = $this->pindahMentor->ShowAdmin();
             $mahasiswa = Mahasiswa::latest()->get();
-            return view('admin.pengajuan-mentor',compact('title','data','mentor','mahasiswa'));
+            $notif = $this->notifAdmin->Show();
+            $count = $this->notifAdmin->Count();
+            return view('admin.pengajuan-mentor',compact('title','data','mentor','mahasiswa','notif','count'));
         }
         
     }

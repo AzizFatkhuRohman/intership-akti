@@ -77,6 +77,12 @@
                                     <a href="{{url('mahasiswa/notification/'.Auth::user()->id)}}">View all</a>
                                     @elseif(Auth::user()->role=='section')
                                     <a href="{{url('section/notification/'.Auth::user()->id)}}">View all</a>
+                                    @elseif(Auth::user()->role=='departement')
+                                    <a href="{{url('departement/notification/'.Auth::user()->id)}}">View all</a>
+                                    @elseif(Auth::user()->role=='admin')
+                                    <a href="{{url('admin/notification/'.Auth::user()->id)}}">View all</a>
+                                    @else
+                                    <a href="{{url('dosen/notification/'.Auth::user()->id)}}">View all</a>
                                     @endif
                                 </div>
 
@@ -416,6 +422,49 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-item has-submenu">
+                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+                        <a class="nav-link submenu-toggle {{ $title == 'Logbook Mingguan' || $title == 'Evaluasi Bulanan Ganjil' || $title == 'Evaluasi Bulanan Genap' || $title == 'Triwulan' ? 'active' : '' }}"
+                            href="#" data-bs-toggle="collapse" data-bs-target="#sublogbook" aria-expanded="false"
+                            aria-controls="sublogbook">
+                            <span class="nav-icon">
+                                <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-files"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M4 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4z" />
+                                    <path
+                                        d="M6 0h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1H4a2 2 0 0 1 2-2z" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-text">Logbook</span>
+                            <span class="submenu-arrow">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                                </svg>
+                            </span>
+                            <!--//submenu-arrow-->
+                        </a>
+                        <!--//nav-link-->
+                        <div id="sublogbook" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
+                            <ul class="submenu-list list-unstyled">
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ $title == 'Logbook Mingguan' ? 'active' : '' }}"
+                                        href="{{url('admin/logbook/mingguan')}}">Mingguan</a></li>
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ $title == 'Evaluasi Bulanan Ganjil' ? 'active' : '' }}"
+                                        href="{{url('admin/logbook/bulanan-ganjil')}}">Bulanan Ganjil</a></li>
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ $title == 'Evaluasi Bulanan Genap' ? 'active' : '' }}"
+                                        href="{{url('admin/logbook/bulanan-genap')}}">Bulanan Genap</a></li>
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ $title == 'Triwulan' ? 'active' : '' }}"
+                                        href="{{url('admin/logbook/triwulan')}}">Triwulan</a></li>
+                            </ul>
+                        </div>
+                    </li>
                     <!--//nav-item-->
                     <li class="nav-item has-submenu">
                         <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
@@ -444,16 +493,16 @@
                         <div id="submenu-2" class="collapse submenu submenu-2" data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
                                 <li class="submenu-item"><a class="submenu-link {{ $title == 'PPT' ? 'active' : '' }}"
-                                        href="{{url('mahasiswa/report/ppt')}}">PPT</a></li>
+                                        href="{{url('admin/report/ppt')}}">PPT</a></li>
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Tugas akhir' ? 'active' : '' }}"
-                                        href="{{url('mahasiswa/report/tugas-akhir')}}">Tugas akhir</a></li>
+                                        href="{{url('admin/report/tugas-akhir')}}">Tugas akhir</a></li>
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Report A3' ? 'active' : '' }}"
-                                        href="{{url('mahasiswa/report/report-a3')}}">Report A3</a></li>
+                                        href="{{url('admin/report/report-a3')}}">Report A3</a></li>
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Sertifikat' ? 'active' : '' }}"
-                                        href="{{url('mahasiswa/report/sertifikat')}}">Sertifikat</a></li>
+                                        href="{{url('admin/report/sertifikat')}}">Sertifikat</a></li>
                             </ul>
                         </div>
                     </li>

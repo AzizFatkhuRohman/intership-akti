@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\NotifAdmin;
+use App\Models\NotifDepartement;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
 use App\Models\NotifSection;
@@ -16,12 +18,16 @@ class SertifikatController extends Controller
     protected $notifMahasiswa;
     protected $notifMentor;
     protected $notifSection;
-    public function __construct(Sertifikat $sertifikat,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor,NotifSection $notifSection)
+    protected $notifDepartement;
+    protected $notifAdmin;
+    public function __construct(Sertifikat $sertifikat,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor,NotifSection $notifSection,NotifDepartement $notifDepartement,NotifAdmin $notifAdmin)
     {
         $this->sertifikat = $sertifikat;
         $this->notifMahasiswa=$notifMahasiswa;
         $this->notifMentor=$notifMentor;
         $this->notifSection=$notifSection;
+        $this->notifDepartement=$notifDepartement;
+        $this->notifAdmin=$notifAdmin;
     }
     public function index()
     {
@@ -45,7 +51,24 @@ class SertifikatController extends Controller
         }elseif(Auth::user()->role == 'departement'){
             return view('departement.report.sertifikat',[
                 'title'=>$title,
-                'data'=>$this->sertifikat->ShowDepartement()
+                'data'=>$this->sertifikat->ShowDepartement(),
+                'notif'=>$this->notifDepartement->Show(),
+                'count'=>$this->notifDepartement->Count()
+            ]);
+        }elseif(Auth::user()->role == 'dosen'){
+            return view('dosen.report.sertifikat',[
+                'title'=>$title,
+                'data'=>$this->sertifikat->ShowDosen(),
+                'notif'=>$this->notifAdmin->ShowDosen(),
+                'count'=>$this->notifAdmin->CountDosen()
+            ]);
+        }
+        else{
+            return view('admin.report.sertifikat',[
+                'title'=>$title,
+                'data'=>Sertifikat::latest()->paginate(10),
+                'notif'=>$this->notifAdmin->Show(),
+                'count'=>$this->notifAdmin->Count()
             ]);
         }
     }
@@ -74,6 +97,13 @@ class SertifikatController extends Controller
             'departement_id'=>$mahasiswa_id->departement_id,
             'nama_file' => $nama_file
         ]);
+        $this->notifAdmin->Store([
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id' => $mahasiswa_id->mentor_id,
+            'section_id' => $mahasiswa_id->section_id,
+            'departement_id' => $mahasiswa_id->departement_id,
+            'content'=>Auth::user()->nama.' Telah unggah Sertifikat'
+        ]);
         return back()->with('sukses', 'Data berhasil ditambahkan');
     }
 
@@ -96,9 +126,27 @@ class SertifikatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sertifikat $sertifikat)
+    public function update(Request $request, $id)
     {
-
+        $mahasiswa_id = Mahasiswa::where('user_id', Auth::user()->id)->first();
+        $file = $request->file('nama_file');
+        $nama_file = $file->hashName();
+        $file->move(public_path('sertifikat'), $nama_file);
+        $this->sertifikat->Edit($id,[
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id'=>$mahasiswa_id->mentor_id,
+            'section_id'=>$mahasiswa_id->section_id,
+            'departement_id'=>$mahasiswa_id->departement_id,
+            'nama_file' => $nama_file
+        ]);
+        $this->notifAdmin->Store([
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id' => $mahasiswa_id->mentor_id,
+            'section_id' => $mahasiswa_id->section_id,
+            'departement_id' => $mahasiswa_id->departement_id,
+            'content'=>Auth::user()->nama.' Telah unggah Sertifikat'
+        ]);
+        return redirect('mahasiswa/report/sertifikat')->with('sukses', 'Data berhasil diubah');
     }
 
     /**

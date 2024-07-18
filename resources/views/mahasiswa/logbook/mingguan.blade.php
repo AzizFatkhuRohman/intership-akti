@@ -89,6 +89,21 @@
                                         <input type="text" class="form-control" id="exampleFormControlInput1"
                                             name="hyarihatto" required>
                                     </div>
+                                    <div class="col-6">
+                                        <label for="exampleFormControlInput1" class="form-label">Point To Remember</label>
+                                        <input type="text" class="form-control" id="exampleFormControlInput1"
+                                            name="point_to_remember" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="exampleFormControlInput1" class="form-label">Self Evaluation</label>
+                                        <select class="form-select" aria-label="Default select example" name="self_evaluation"
+                                            required>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                         </div>
@@ -251,12 +266,28 @@
                                                                 id="exampleFormControlInput1" name="hyarihatto"
                                                                 value="{{$item->hyarihatto}}" required>
                                                         </div>
+                                                        <div class="col-6">
+                                                            <label for="exampleFormControlInput1" class="form-label">Point To Remember</label>
+                                                            <input type="text" class="form-control" id="exampleFormControlInput1"
+                                                                name="point_to_remember" value="{{$item->point_to_remember}}" required>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="exampleFormControlInput1" class="form-label">Self Evaluation</label>
+                                                            <select class="form-select" aria-label="Default select example" name="self_evaluation"
+                                                                required>
+                                                                <option value="{{$item->self_evaluation}}">{{$item->self_evaluation}}</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                            </select>
+                                                        </div>
                                                         <div class="mb-3">
                                                             <label for="exampleFormControlTextarea1"
                                                                 class="form-label">Komentar</label>
-                                                            <textarea class="form-control" id="exampleFormControlTextarea2"
-                                                                rows="3" name="komentar"
-                                                                readonly>{{$item->komentar}}</textarea>
+                                                            <textarea class="form-control"
+                                                                id="exampleFormControlTextarea2" rows="3"
+                                                                name="komentar" readonly>{{$item->komentar}}</textarea>
                                                         </div>
                                                     </div>
 
@@ -268,7 +299,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endif
                                 <form action="{{url('mahasiswa/logbook/mingguan/'.$item->id)}}" method="post"
                                     id="mingguan">
                                     @method('delete')
@@ -281,6 +311,8 @@
                                         </svg></button>
                                     @csrf
                                 </form>
+                                @endif
+
                                 <a href="{{url('mahasiswa/logbook/mingguan/'.$item->id)}}" class="btn btn-info"><svg
                                         xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-eye-fill text-white" viewBox="0 0 16 16">
@@ -358,4 +390,23 @@
         </div>
     </div>
 </div>
+<script>
+    function hapusMingguan() {
+      Swal.fire({
+          title: 'Konfirmasi',
+          text: 'Apakah Anda yakin ingin menghapus ini?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ya, Hapus!',
+          cancelButtonText: 'Batal'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              document.getElementById('mingguan').submit();
+          }
+      });
+      
+  }
+</script>
 @endsection

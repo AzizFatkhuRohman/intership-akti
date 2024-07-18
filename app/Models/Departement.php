@@ -39,9 +39,17 @@ class Departement extends Model
     {
         return $this->hasMany(LogbookMingguan::class);
     }
+    public function triwulanGanjil()
+    {
+        return $this->hasMany(TriwulanGanjil::class);
+    }
     public function notifMentor()
     {
         return $this->hasMany(NotifMentor::class);
+    }
+    public function notifAdmin()
+    {
+        return $this->hasMany(NotifAdmin::class);
     }
     public function notifSection()
     {

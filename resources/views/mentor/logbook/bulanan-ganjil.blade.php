@@ -386,8 +386,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <form action="{{url('mentor/logbook/bulanan-ganjil')}}" method="post">
+                        <form action="{{url('mentor/logbook/bulanan-ganjil/'.$item->id)}}" method="post">
                           @csrf
+                          @method('put')
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>Nama Mahasiswa</b></label>
                             <input type="text" class="form-control" id="exampleFormControlInput1" name="mahasiswa" value="{{$item->mahasiswa->user->nama}}" readonly>
@@ -395,6 +396,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>A. KESEHATAN</b></label>
                             <select class="form-select" aria-label="Default select example" name="kesehatan">
+                              <option value="{{$item->kesehatan}}">{{$item->kesehatan}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -407,6 +409,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>B1. Safety Accident</b></label>
                             <select class="form-select" aria-label="Default select example" name="safety_accident">
+                              <option value="{{$item->safety_accident}}">{{$item->safety_accident}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -417,6 +420,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>B2. Penggunaan APD</b></label>
                             <select class="form-select" aria-label="Default select example" name="apd">
+                              <option value="{{$item->apd}}">{{$item->apd}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -427,6 +431,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>B3. Penerapan SPC</b></label>
                             <select class="form-select" aria-label="Default select example" name="spc">
+                              <option value="{{$item->spc}}">{{$item->spc}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -437,6 +442,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>B4. Penerapan SCW</b></label>
                             <select class="form-select" aria-label="Default select example" name="scw">
+                              <option value="{{$item->scw}}">{{$item->scw}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -447,6 +453,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>B5. Kemampuan Duga Bahaya</b></label>
                             <select class="form-select" aria-label="Default select example" name="kyt">
+                              <option value="{{$item->kyt}}">{{$item->kyt}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -457,6 +464,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>B6. Safety (KY Ability)</b></label>
                             <select class="form-select" aria-label="Default select example" name="safety_ability">
+                              <option value="{{$item->safety_ability}}">{{$item->safety_ability}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -466,6 +474,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>B7. Safety (Idea Hyarihatto)</b></label>
                             <select class="form-select" aria-label="Default select example" name="safety_idea">
+                              <option value="{{$item->safety_idea}}">{{$item->safety_idea}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -476,6 +485,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>C1. BIQ (DATA DEFECT /OPT)</b></label>
                             <select class="form-select" aria-label="Default select example" name="biq">
+                              <option value="{{$item->biq}}">{{$item->biq}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -485,6 +495,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>C2. DIV QUALITY</b></label>
                             <select class="form-select" aria-label="Default select example" name="div">
+                              <option value="{{$item->div}}">{{$item->div}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -494,6 +505,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>C3. CUSTOMER / NEXT PROSES</b></label>
                             <select class="form-select" aria-label="Default select example" name="customer">
+                              <option value="{{$item->customer}}">{{$item->customer}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -503,6 +515,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>C4. ANALISA PROBLEM</b></label>
                             <select class="form-select" aria-label="Default select example" name="analisa">
+                              <option value="{{$item->analisa}}">{{$item->analisa}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -512,6 +525,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>C5. REPORTING</b></label>
                             <select class="form-select" aria-label="Default select example" name="reporting">
+                              <option value="{{$item->reporting}}">{{$item->reporting}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -522,6 +536,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>D1. PENGUASAAN JOB</b></label>
                             <select class="form-select" aria-label="Default select example" name="job">
+                              <option value="{{$item->job}}">{{$item->job}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -532,6 +547,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>D.2.1. Motivasi melakukan pekerjaan</b></label>
                             <select class="form-select" aria-label="Default select example" name="motivasi">
+                              <option value="{{$item->motivasi}}">{{$item->motivasi}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -541,6 +557,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>D.2.2. Penyelesaian pekerjaan</b></label>
                             <select class="form-select" aria-label="Default select example" name="penyelesaian">
+                              <option value="{{$item->penyelesaian}}">{{$item->penyelesaian}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -550,6 +567,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>D.2.3. Karakteristik hasil kerja</b></label>
                             <select class="form-select" aria-label="Default select example" name="karakteristik">
+                              <option value="{{$item->karakteristik}}">{{$item->karakteristik}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -559,6 +577,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>D.3. PERSIAPAN PRODUKSI (TPM)</b></label>
                             <select class="form-select" aria-label="Default select example" name="tpm">
+                              <option value="{{$item->tpm}}">{{$item->tpm}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -568,6 +587,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>D.4. LINE STOP</b></label>
                             <select class="form-select" aria-label="Default select example" name="line">
+                              <option value="{{$item->line}}">{{$item->line}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -577,6 +597,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>D.5. REPAIR/ REWORK</b></label>
                             <select class="form-select" aria-label="Default select example" name="repair">
+                              <option value="{{$item->repair}}">{{$item->repair}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -587,6 +608,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>E.1. PEMAKAIAN MATERIAL (INDIRECT)</b></label>
                             <select class="form-select" aria-label="Default select example" name="indirect">
+                              <option value="{{$item->indirect}}">{{$item->indirect}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -596,6 +618,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>E.2. STD PEMAKAIAN MATERIAL (DIRECT)</b></label>
                             <select class="form-select" aria-label="Default select example" name="direct">
+                              <option value="{{$item->direct}}">{{$item->direct}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -605,6 +628,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>E.3. RULE ABNORMALITY MATERIAL</b></label>
                             <select class="form-select" aria-label="Default select example" name="abnormality">
+                              <option value="{{$item->abnormality}}">{{$item->abnormality}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -615,6 +639,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>F.1. KEHADIRAN</b></label>
                             <select class="form-select" aria-label="Default select example" name="kehadiran">
+                              <option value="{{$item->kehadiran}}">{{$item->kehadiran}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -625,6 +650,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>F.2.1. Mindset</b></label>
                             <select class="form-select" aria-label="Default select example" name="mindset">
+                              <option value="{{$item->mindset}}">{{$item->mindset}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -635,6 +661,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>F.3.1. Kepribadian</b></label>
                             <select class="form-select" aria-label="Default select example" name="pribadi">
+                              <option value="{{$item->pribadi}}">{{$item->pribadi}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -644,6 +671,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>F.4. JAM KERJA NORMAL (JKN)</b></label>
                             <select class="form-select" aria-label="Default select example" name="jkn">
+                              <option value="{{$item->jkn}}">{{$item->jkn}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -653,6 +681,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>F.5. 5R</b></label>
                             <select class="form-select" aria-label="Default select example" name="lima_r">
+                              <option value="{{$item->lima_r}}">{{$item->lima_r}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -662,6 +691,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>F.6. QCC</b></label>
                             <select class="form-select" aria-label="Default select example" name="qcc">
+                              <option value="{{$item->qcc}}">{{$item->qcc}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -671,6 +701,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>F.7. IDEA/IMPROVEMENT</b></label>
                             <select class="form-select" aria-label="Default select example" name="idea">
+                              <option value="{{$item->idea}}">{{$item->idea}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -681,6 +712,7 @@
                           <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label"><b>F.8.1. TJI</b></label>
                             <select class="form-select" aria-label="Default select example" name="tji">
+                              <option value="{{$item->tji}}">{{$item->tji}}</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -698,7 +730,7 @@
                 <form action="{{url('mentor/logbook/bulanan-ganjil/'.$item->id)}}" method="post" id="evaluasiganjil">
                   @csrf
                   @method('delete')
-                  <button type="submit" class="btn btn-danger" onclick="evaluasiganjil()">
+                  <button type="button" class="btn btn-danger" onclick="evaluasiganjil()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                       class="bi bi-trash3-fill text-white" viewBox="0 0 16 16">
                       <path
@@ -784,4 +816,23 @@
     </div>
   </div>
 </div>
+<script>
+  function evaluasiganjil() {
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Apakah Anda yakin ingin menghapus ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('evaluasiganjil').submit();
+        }
+    });
+    
+}
+</script>
 @endsection

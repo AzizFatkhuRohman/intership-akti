@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
+use App\Models\NotifAdmin;
+use App\Models\NotifDepartement;
 use App\Models\NotifMahasiswa;
 use App\Models\NotifMentor;
 use App\Models\NotifSection;
@@ -20,13 +22,17 @@ class PptController extends Controller
     protected $notifMahasiswa;
     protected $notifMentor;
     protected $notifSection;
-    public function __construct(Ppt $ppt, Mahasiswa $mahasiswa,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor, NotifSection $notifSection)
+    protected $notifDepartement;
+    protected $notifAdmin;
+    public function __construct(Ppt $ppt, Mahasiswa $mahasiswa,NotifMahasiswa $notifMahasiswa, NotifMentor $notifMentor, NotifSection $notifSection,NotifDepartement $notifDepartement,NotifAdmin $notifAdmin)
     {
         $this->ppt = $ppt;
         $this->mahasiswa = $mahasiswa;
         $this->notifMahasiswa = $notifMahasiswa;
         $this->notifMentor=$notifMentor;
         $this->notifSection=$notifSection;
+        $this->notifDepartement=$notifDepartement;
+        $this->notifAdmin=$notifAdmin;
     }
     public function index()
     {
@@ -51,15 +57,26 @@ class PptController extends Controller
             return view('section.report.ppt', compact('title', 'data','notif','count'));
         } elseif(Auth::user()->role == 'dosen'){
             $dosen_id = Dosen::where('user_id',Auth::user()->id)->value('id');
-            $mahasiswa_id = Mahasiswa::where('dosen_id',$dosen_id)->value('id');
+            $mahasiswa_id = Mahasiswa::where('dosen_id',$dosen_id)->pluck('id');
             return view('dosen.report.ppt',[
                 'title'=>$title,
-                'data'=>Ppt::where('mahasiswa_id',$mahasiswa_id)->latest()->paginate(20)
+                'data'=>Ppt::whereIn('mahasiswa_id',$mahasiswa_id)->latest()->paginate(20),
+                'notif'=>$this->notifAdmin->ShowDosen(),
+                'count'=>$this->notifAdmin->CountDosen()
             ]);
         } elseif (Auth::user()->role == 'departement'){
             return view('departement.report.ppt',[
                 'title'=>$title,
-                'data'=>$this->ppt->ShowDepartement()
+                'data'=>$this->ppt->ShowDepartement(),
+                'notif'=>$this->notifDepartement->Show(),
+                'count'=>$this->notifDepartement->Count()
+            ]);
+        } else{
+            return view('admin.report.ppt',[
+                'title'=>$title,
+                'data'=>Ppt::latest()->paginate(10),
+                'notif'=>$this->notifAdmin->Show(),
+                'count'=>$this->notifAdmin->Count()
             ]);
         }
 
@@ -89,6 +106,13 @@ class PptController extends Controller
             'departement_id' => $mahasiswa_id->departement_id,
             'nama_file' => $nama_file
         ]);
+        $this->notifAdmin->Store([
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id' => $mahasiswa_id->mentor_id,
+            'section_id' => $mahasiswa_id->section_id,
+            'departement_id' => $mahasiswa_id->departement_id,
+            'content'=>Auth::user()->nama.' Telah unggah PPT'
+        ]);
         return back()->with('sukses', 'Data berhasil ditambahkan');
     }
 
@@ -111,9 +135,27 @@ class PptController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Ppt $ppt)
+    public function update(Request $request, $id)
     {
-        //
+        $mahasiswa_id = Mahasiswa::where('user_id', Auth::user()->id)->first();
+        $file = $request->file('nama_file');
+        $nama_file = $file->hashName();
+        $file->move(public_path('ppt'), $nama_file);
+        $this->ppt->Edit($id,[
+            'mahasiswa_id' => $mahasiswa_id->id,
+            'mentor_id' => $mahasiswa_id->mentor_id,
+            'section_id' => $mahasiswa_id->section_id,
+            'departement_id' => $mahasiswa_id->departement_id,
+            'nama_file' => $nama_file
+        ]);
+        $this->notifAdmin->Store([
+            'mahasiswa_id'=>$mahasiswa_id->id,
+            'mentor_id' => $mahasiswa_id->mentor_id,
+            'section_id' => $mahasiswa_id->section_id,
+            'departement_id' => $mahasiswa_id->departement_id,
+            'content'=>Auth::user()->nama.' Telah unggah PPT'
+        ]);
+        return redirect('mahasiswa/report/ppt')->with('sukses','Data berhasil diubah');
     }
 
     /**

@@ -96,4 +96,17 @@
       }
     });
 </script>
+<script>
+    // Fungsi untuk melakukan refresh otomatis setiap 30 detik
+    function autoRefreshPage() {
+        // Menggunakan fungsi setTimeout untuk menjadwalkan pemanggilan diri sendiri setiap 30 detik
+        setTimeout(function() {
+            // Memuat ulang halaman saat fungsi dipanggil
+            location.reload();
+        }, 30000); // 30 detik dalam milidetik (1000ms = 1 detik)
+    }
+    
+    // Memanggil fungsi autoRefreshPage untuk pertama kali agar halaman dimuat ulang setelah 30 detik pertama
+    autoRefreshPage();
+</script>
 @endsection

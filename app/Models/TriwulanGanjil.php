@@ -21,6 +21,14 @@ class TriwulanGanjil extends Model
     {
         return $this->belongsTo(Mentor::class);
     }
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
+    public function departement()
+    {
+        return $this->belongsTo(Departement::class);
+    }
     public function ShowMentor()
     {
         $mentor_id = Mentor::where('user_id', Auth::user()->id)->value('id');

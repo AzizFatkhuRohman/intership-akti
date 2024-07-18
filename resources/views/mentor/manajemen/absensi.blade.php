@@ -23,7 +23,7 @@
             <table class="table table-striped table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col">NOREG</th>
+                        <th scope="col">Tanggal</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Keterangan</th>
                         <th scope="col">Status</th>
@@ -33,7 +33,7 @@
                 <tbody>
                     @foreach ($data as $item)
                     <tr>
-                        <th scope="row">{{$item->mahasiswa->no_reg}}</th>
+                        <th scope="row">{{$item->created_at}}</th>
                         <td>{{$item->mahasiswa->user->nama}}</td>
                         <td>{{$item->keterangan}}</td>
                         <td>

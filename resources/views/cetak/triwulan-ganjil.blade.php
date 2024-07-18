@@ -156,7 +156,7 @@
                 <p class="s1" style="padding-left: 3pt;text-indent: 0pt;line-height: 13pt;text-align: center;">:</p>
             </td>
             <td style="width:61pt">
-                <p class="s1" style="padding-left: 5pt;text-indent: 0pt;line-height: 13pt;text-align: left;">Wahyuadin
+                <p class="s1" style="padding-left: 5pt;text-indent: 0pt;line-height: 13pt;text-align: left;">{{$data->mahasiswa->user->nama}}
                 </p>
             </td>
             <td style="width:22pt">
@@ -172,7 +172,7 @@
                 <p class="s1" style="padding-right: 5pt;text-indent: 0pt;line-height: 13pt;text-align: right;">:</p>
             </td>
             <td style="width:52pt">
-                <p class="s1" style="padding-left: 5pt;text-indent: 0pt;line-height: 13pt;text-align: left;">Admin</p>
+                <p class="s1" style="padding-left: 5pt;text-indent: 0pt;line-height: 13pt;text-align: left;">{{$data->mentor->divisi}}</p>
             </td>
         </tr>
         <tr style="height:21pt">
@@ -184,7 +184,7 @@
                 <p class="s1" style="padding-top: 3pt;padding-left: 3pt;text-indent: 0pt;text-align: center;">:</p>
             </td>
             <td style="width:61pt">
-                <p class="s1" style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">1141</p>
+                <p class="s1" style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">{{$data->mahasiswa->no_reg}}</p>
             </td>
             <td style="width:22pt">
                 <p style="text-indent: 0pt;text-align: left;"><br /></p>
@@ -200,7 +200,7 @@
                 <p class="s1" style="padding-top: 3pt;padding-right: 5pt;text-indent: 0pt;text-align: right;">:</p>
             </td>
             <td style="width:52pt">
-                <p class="s1" style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Penristek
+                <p class="s1" style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">{{$data->departement->nama_departement}}
                 </p>
             </td>
         </tr>
@@ -217,17 +217,17 @@
             </td>
             <td style="width:61pt">
                 <p class="s1"
-                    style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;line-height: 13pt;text-align: left;">2021
+                    style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;line-height: 13pt;text-align: left;">{{$data->periode}}
                 </p>
             </td>
             <td style="width:22pt">
                 <p class="s1"
-                    style="padding-top: 3pt;padding-left: 1pt;text-indent: 0pt;line-height: 13pt;text-align: left;">s/d
+                    style="padding-top: 3pt;padding-left: 1pt;text-indent: 0pt;line-height: 13pt;text-align: left;">
                 </p>
             </td>
             <td style="width:51pt">
                 <p class="s1"
-                    style="padding-top: 3pt;padding-left: 7pt;text-indent: 0pt;line-height: 13pt;text-align: left;">2024
+                    style="padding-top: 3pt;padding-left: 7pt;text-indent: 0pt;line-height: 13pt;text-align: left;">
                 </p>
             </td>
             <td style="width:93pt">
@@ -242,7 +242,7 @@
             </td>
             <td style="width:52pt">
                 <p class="s1"
-                    style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;line-height: 13pt;text-align: left;">Lab
+                    style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;line-height: 13pt;text-align: left;">{{$data->section->nama_section}}
                 </p>
             </td>
         </tr>
