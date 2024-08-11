@@ -96,6 +96,6 @@ class PindahMentorController extends Controller
     public function destroy($id)
     {
         $this->pindahMentor->Hapus($id);
-        return redirect('mahasiswa/manajemen/pindah-mentor')->with('sukses','Data berhasil dibatalkan');
+        return redirect('admin/pengajuan-mentor')->with('sukses','Data berhasil dibatalkan');
     }
 }

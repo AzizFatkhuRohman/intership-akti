@@ -96,7 +96,10 @@ class PptController extends Controller
     public function store(Request $request)
     {
         $mahasiswa_id = Mahasiswa::where('user_id', Auth::user()->id)->first();
-        $file = $request->file('nama_file');
+        if ($mahasiswa_id == null) {
+            return back()->with('gagal','Lengkapi profilmu');
+        } else {
+            $file = $request->file('nama_file');
         $nama_file = $file->hashName();
         $file->move(public_path('ppt'), $nama_file);
         $this->ppt->Store([
@@ -114,6 +117,8 @@ class PptController extends Controller
             'content'=>Auth::user()->nama.' Telah unggah PPT'
         ]);
         return back()->with('sukses', 'Data berhasil ditambahkan');
+        }
+        
     }
 
     /**

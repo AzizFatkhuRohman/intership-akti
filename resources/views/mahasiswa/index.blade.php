@@ -81,6 +81,7 @@
                                                         name="shift" required>
                                                         <option value="red">red</option>
                                                         <option value="white">white</option>
+                                                        <option value="non">non</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-6">

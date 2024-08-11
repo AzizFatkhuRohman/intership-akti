@@ -120,13 +120,15 @@ class MentorController extends Controller
     public function search(Request $request){
         $title = 'Mentor';
         $keyword = $request->cari;
-        $data = User::where('nama', 'LIKE', "%$keyword%")
-            ->orWhere('nomor_induk', 'LIKE', "%$keyword%")
+        $data = Mentor::where('nama_gl', 'LIKE', "%$keyword%")
             ->paginate(10);
         if (Auth::user()->role = 'mahasiswa') {
-        return view('mahasiswa.manajemen.pengguna',[
+        return view('mahasiswa.manajemen.mentor',[
             'title'=>$title,
             'data'=> $data,
+            'user'=>User::where('role', 'mentor')->orderBy('nama', 'desc')->get(),
+            'sectionData' => Section::latest()->get(),
+        'departementData' => Departement::latest()->get(),
             'notif'=> $this->notifMahasiswa->Show(),
             'count'=> $this->notifMahasiswa->Count()
         ]);

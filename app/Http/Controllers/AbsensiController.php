@@ -81,35 +81,40 @@ class AbsensiController extends Controller
     public function store(Request $request)
     {
         $mahasiswa_id = Mahasiswa::where('user_id', Auth::user()->id)->first();
-        if (!$request->gambar) {
-            $this->absensi->Store([
-                'mahasiswa_id' => $mahasiswa_id->id,
-                'mentor_id'=>$mahasiswa_id->mentor_id,
-                'section_id'=>$mahasiswa_id->section_id,
-                'departement_id'=>$mahasiswa_id->departement_id,
-                'keterangan' => $request->keterangan
-            ]);
+        if ($mahasiswa_id == null) {
+            return back()->with('gagal','Lengkapi profilmu');
         } else {
-            $file = $request->file('gambar');
-            $namaGambar = $file->getClientOriginalName();
-            $file->move(public_path('absensi'), $namaGambar);
-            $this->absensi->Store([
-                'mahasiswa_id' => $mahasiswa_id->id,
+            if (!$request->gambar) {
+                $this->absensi->Store([
+                    'mahasiswa_id' => $mahasiswa_id->id,
+                    'mentor_id'=>$mahasiswa_id->mentor_id,
+                    'section_id'=>$mahasiswa_id->section_id,
+                    'departement_id'=>$mahasiswa_id->departement_id,
+                    'keterangan' => $request->keterangan
+                ]);
+            } else {
+                $file = $request->file('gambar');
+                $namaGambar = $file->getClientOriginalName();
+                $file->move(public_path('absensi'), $namaGambar);
+                $this->absensi->Store([
+                    'mahasiswa_id' => $mahasiswa_id->id,
+                    'mentor_id'=>$mahasiswa_id->mentor_id,
+                    'section_id'=>$mahasiswa_id->section_id,
+                    'departement_id'=>$mahasiswa_id->departement_id,
+                    'keterangan' => $request->keterangan,
+                    'gambar' => $namaGambar
+                ]);
+            }
+            $this->notifMentor->Store([
+                'mahasiswa_id'=>$mahasiswa_id->id,
                 'mentor_id'=>$mahasiswa_id->mentor_id,
                 'section_id'=>$mahasiswa_id->section_id,
                 'departement_id'=>$mahasiswa_id->departement_id,
-                'keterangan' => $request->keterangan,
-                'gambar' => $namaGambar
+                'content'=>Auth::user()->nama.' telah absensi '.$request->keterangan
             ]);
+            return back()->with('sukses', 'Data berhasil ditambahkan');
         }
-        $this->notifMentor->Store([
-            'mahasiswa_id'=>$mahasiswa_id->id,
-            'mentor_id'=>$mahasiswa_id->mentor_id,
-            'section_id'=>$mahasiswa_id->section_id,
-            'departement_id'=>$mahasiswa_id->departement_id,
-            'content'=>Auth::user()->nama.' telah absensi '.$request->keterangan
-        ]);
-        return back()->with('sukses', 'Data berhasil ditambahkan');
+        
     }
 
     /**
@@ -187,7 +192,9 @@ class AbsensiController extends Controller
                 $query->where('keterangan', 'LIKE', "%$keyword%")
                       ->orWhere('status', 'LIKE', "%$keyword%");
             })
-            ->paginate(10)
+            ->paginate(10),
+            'notif' => $this->notifMahasiswa->Show(),
+            'count' => $this->notifMahasiswa->Count()
         ]);
         } elseif(Auth::user()->role == 'mentor') {
             $mentor_id = Mentor::where('user_id',Auth::user()->id)->value('id');
@@ -198,7 +205,9 @@ class AbsensiController extends Controller
                 $query->where('keterangan', 'LIKE', "%$keyword%")
                       ->orWhere('status', 'LIKE', "%$keyword%");
             })
-            ->paginate(10)
+            ->paginate(10),
+            'notif' => $this->notifMentor->Show(),
+            'count' => $this->notifMentor->Count()
         ]);
         }
         

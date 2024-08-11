@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
 use App\Models\EvaluasiGanjil;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
@@ -57,17 +58,19 @@ class EvaluasiGanjilController extends Controller
                 'notif'=>$this->notifMahasiswa->Show(),
                 'count'=>$this->notifMahasiswa->Count()
             ]);
-        } elseif(Auth::user()->role == 'departement'){
-            return view('departement.logbook.bulanan-ganjil',[
-                'title'=>$title,
-                'data'=>$this->evaluasiGanjil->Show(),
-                'notif'=>$this->notifDepartement->Show(),
-                'count'=>$this->notifDepartement->Count()
-            ]);
-        }elseif(Auth::user()->role == 'admin'){
+        } elseif(Auth::user()->role == 'admin'){
             return view('admin.logbook.bulanan-ganjil',[
                 'title'=>$title,
                 'data'=>EvaluasiGanjil::latest()->paginate(10),
+                'notif'=>$this->notifAdmin->Show(),
+                'count'=>$this->notifAdmin->Count()
+            ]);
+        } else{
+            $dosen = Dosen::where('user_id',Auth::user()->id)->value('id');
+            $mahasiswa = Mahasiswa::where('dosen_id',$dosen)->value('id');
+            return view('dosen.logbook.bulanan-ganjil',[
+                'title'=>$title,
+                'data'=>EvaluasiGanjil::where('mahasiswa_id',$mahasiswa)->latest()->paginate(10),
                 'notif'=>$this->notifAdmin->Show(),
                 'count'=>$this->notifAdmin->Count()
             ]);
@@ -169,11 +172,12 @@ class EvaluasiGanjilController extends Controller
      */
     public function show($id)
     {
-        $pdf = Pdf::loadView('cetak.evaluasi-ganjil', [
-            'data'=>EvaluasiGanjil::find($id)->first()
-        ]);
-        $pdf->setPaper('A4', 'portrait');
-        return $pdf->stream(Faker::create()->randomNumber(5, true) . '-triwulan-ganjil.pdf');
+        return back()->with('gagal','Sedang dalam maintenance');
+        // $pdf = Pdf::loadView('cetak.evaluasi-ganjil', [
+        //     'data'=>EvaluasiGanjil::find($id)->first()
+        // ]);
+        // $pdf->setPaper('A4', 'portrait');
+        // return $pdf->stream(Faker::create()->randomNumber(5, true) . '-triwulan-ganjil.pdf');
     }
 
     /**

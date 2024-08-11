@@ -762,9 +762,9 @@
                         <!--//nav-link-->
                         <div id="sublogbook" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
-                                <li class="submenu-item"><a
+                                {{-- <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Logbook Mingguan' ? 'active' : '' }}"
-                                        href="{{url('section/logbook/mingguan')}}">Mingguan</a></li>
+                                        href="{{url('section/logbook/mingguan')}}">Mingguan</a></li> --}}
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Evaluasi Bulanan Ganjil' ? 'active' : '' }}"
                                         href="{{url('section/logbook/bulanan-ganjil')}}">Bulanan Ganjil</a></li>
@@ -892,7 +892,7 @@
                     </li>
                     <li class="nav-item has-submenu">
                         <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                        <a class="nav-link submenu-toggle {{ $title == 'Logbook Mingguan' || $title == 'Logbook Bulanan' || $title == 'Triwulan' ? 'active' : '' }}"
+                        <a class="nav-link submenu-toggle {{ $title == 'Logbook Mingguan' || $title == 'Evaluasi Bulanan Ganjil' || $title == 'Evaluasi bulanan Genap' || $title == 'Triwulan' ? 'active' : '' }}"
                             href="#" data-bs-toggle="collapse" data-bs-target="#sublogbook" aria-expanded="false"
                             aria-controls="sublogbook">
                             <span class="nav-icon">
@@ -922,8 +922,11 @@
                                         class="submenu-link {{ $title == 'Logbook Mingguan' ? 'active' : '' }}"
                                         href="{{url('dosen/logbook/mingguan')}}">Mingguan</a></li>
                                 <li class="submenu-item"><a
-                                        class="submenu-link {{ $title == 'Logbook Bulanan' ? 'active' : '' }}"
-                                        href="{{url('dosen/logbook/bulanan')}}">Bulanan</a></li>
+                                        class="submenu-link {{ $title == 'Evaluasi Bulanan Ganjil' ? 'active' : '' }}"
+                                        href="{{url('dosen/logbook/bulanan-ganjil')}}">Bulanan ganjil</a></li>
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ $title == 'Evaluasi Bulanan Genap' ? 'active' : '' }}"
+                                        href="{{url('dosen/logbook/bulanan-genap')}}">Bulanan genap</a></li>
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Triwulan' ? 'active' : '' }}"
                                         href="{{url('dosen/logbook/triwulan')}}">Triwulan</a></li>
@@ -1071,7 +1074,7 @@
                         <!--//nav-link-->
                         <div id="sublogbook" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
-                                <li class="submenu-item"><a
+                                {{-- <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Logbook Mingguan' ? 'active' : '' }}"
                                         href="{{url('departement/logbook/mingguan')}}">Mingguan</a></li>
                                 <li class="submenu-item"><a
@@ -1079,7 +1082,7 @@
                                         href="{{url('departement/logbook/bulanan-ganjil')}}">Bulanan Ganjil</a></li>
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Evaluasi Bulanan Genap' ? 'active' : '' }}"
-                                        href="{{url('departement/logbook/bulanan-genap')}}">Bulanan Genap</a></li>
+                                        href="{{url('departement/logbook/bulanan-genap')}}">Bulanan Genap</a></li> --}}
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ $title == 'Triwulan' ? 'active' : '' }}"
                                         href="{{url('departement/logbook/triwulan')}}">Triwulan</a></li>

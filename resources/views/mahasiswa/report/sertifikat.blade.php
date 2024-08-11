@@ -26,7 +26,7 @@
                             <form action="" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-2">
-                                    <label for="exampleFormControlInput1" class="form-label">Unggah File PPT</label>
+                                    <label for="exampleFormControlInput1" class="form-label">Unggah File Sertifikat</label>
                                     <input type="file" class="form-control" id="exampleFormControlInput1"
                                         name="nama_file" accept=".pptx,.ppt,.pdf" name="nama_file" required>
                                 </div>

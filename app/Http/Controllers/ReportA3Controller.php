@@ -87,7 +87,10 @@ class ReportA3Controller extends Controller
     public function store(Request $request)
     {
         $mahasiswa_id = Mahasiswa::where('user_id',Auth::user()->id)->first();
-        $file = $request->file('nama_file');
+        if ($mahasiswa_id == null) {
+            return back()->with('gagal','Lengkapi profilmu');
+        } else {
+            $file = $request->file('nama_file');
         $nama_file = $file->hashName();
         $file->move(public_path('a3'), $nama_file);
         $this->reportA3->Store([
@@ -105,6 +108,8 @@ class ReportA3Controller extends Controller
             'content'=>Auth::user()->nama.' Telah unggah Report A3'
         ]);
         return back()->with('sukses', 'Data berhasil ditambahkan');
+        }
+        
     }
 
     /**

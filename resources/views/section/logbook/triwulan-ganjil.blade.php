@@ -35,7 +35,7 @@
                             <button class="btn btn-danger disabled">Reject Section</button>
                             @elseif ($item->status == 'accept_dep')
                             <button class="btn btn-info disabled">Accept Departement</button>
-                            @elseif ($item->status == 'reject_sec')
+                            @elseif ($item->status == 'reject_dep')
                             <button class="btn btn-danger disabled">Reject Departement</button>
                             @endif
                         </td>

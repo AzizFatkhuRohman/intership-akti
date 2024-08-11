@@ -42,12 +42,12 @@ class SertifikatController extends Controller
             $data = $this->sertifikat->ShowMentor();
             $notif= $this->notifMentor->Show();
             $count = $this->notifMentor->Count();
-            return view('mentor.report.report-a3', compact('title', 'data','notif','count'));
+            return view('mentor.report.sertifikat', compact('title', 'data','notif','count'));
         }elseif (Auth::user()->role == 'section') {
             $data = $this->sertifikat->ShowSection();
             $notif = $this->notifSection->Show();
             $count = $this->notifSection->Count();
-            return view('section.report.report-a3', compact('title', 'data','notif','count'));
+            return view('section.report.sertifikat', compact('title', 'data','notif','count'));
         }elseif(Auth::user()->role == 'departement'){
             return view('departement.report.sertifikat',[
                 'title'=>$title,
@@ -87,7 +87,10 @@ class SertifikatController extends Controller
     public function store(Request $request)
     {
         $mahasiswa_id = Mahasiswa::where('user_id', Auth::user()->id)->first();
-        $file = $request->file('nama_file');
+        if ($mahasiswa_id == null) {
+            return back()->with('gagal','Lengkapi profilmu');
+        } else {
+            $file = $request->file('nama_file');
         $nama_file = $file->hashName();
         $file->move(public_path('sertifikat'), $nama_file);
         $this->sertifikat->Store([
@@ -105,6 +108,8 @@ class SertifikatController extends Controller
             'content'=>Auth::user()->nama.' Telah unggah Sertifikat'
         ]);
         return back()->with('sukses', 'Data berhasil ditambahkan');
+        }
+        
     }
 
     /**

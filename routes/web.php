@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
             Route::resource('pengajuan-mentor',PindahMentorController::class);
             Route::get('dashboard', [Controller::class, 'admin']);
             Route::resource('notification',NotifAdminController::class);
+            Route::get('profil/{id}',[Controller::class,'profil']);
+            Route::put('profil/{id}',[Controller::class,'profilAdmin']);
             Route::prefix('manajemen')->group(function () {
                 Route::resource('pengguna', UserController::class);
                 Route::resource('mahasiswa', MahasiswaController::class);
@@ -191,12 +193,16 @@ Route::middleware('auth')->group(function () {
         Route::prefix('dosen')->group(function () {
             Route::get('dashboard', [Controller::class, 'dosen']);
             Route::resource('notification',NotifAdminController::class);
+            Route::get('profil/{id}',[Controller::class,'profil']);
+            Route::put('profil/{id}',[Controller::class,'profilDosen']);
             Route::prefix('manajemen')->group(function () {
                 Route::resource('mahasiswa', MahasiswaController::class);
                 Route::resource('absensi', AbsensiController::class);
             });
             Route::prefix('logbook')->group(function () {
                 Route::resource('mingguan', LogbookMingguanController::class);
+                Route::resource('bulanan-ganjil',EvaluasiGanjilController::class);
+                Route::resource('bulanan-genap',EvaluasiGenapController::class);
                 Route::resource('triwulan', TriwulanGanjilController::class);
             });
             Route::prefix('report')->group(function () {

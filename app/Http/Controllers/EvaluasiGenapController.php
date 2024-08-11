@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
 use App\Models\EvaluasiGenap;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
@@ -50,13 +51,6 @@ class EvaluasiGenapController extends Controller
                 'notif'=>$this->notifSection->Show(),
                 'count'=>$this->notifSection->Count()
             ]);
-        }elseif(Auth::user()->role == 'departement'){
-            return view('departement.logbook.bulanan-genap',[
-                'title'=>$title,
-                'data'=>$this->evaluasiGenap->Show(),
-                'notif'=>$this->notifDepartement->Show(),
-                'count'=>$this->notifDepartement->Count()
-            ]);
         }elseif(Auth::user()->role == 'mahasiswa'){
             return view('mahasiswa.logbook.bulanan-genap',[
                 'title'=>$title,
@@ -68,6 +62,15 @@ class EvaluasiGenapController extends Controller
             return view('admin.logbook.bulanan-genap',[
                 'title'=>$title,
                 'data'=>EvaluasiGenap::latest()->paginate(10),
+                'notif'=>$this->notifAdmin->Show(),
+                'count'=>$this->notifAdmin->Count()
+            ]);
+        }else{
+            $dosen = Dosen::where('user_id',Auth::user()->id)->value('id');
+            $mahasiswa = Mahasiswa::where('dosen_id',$dosen)->value('id');
+            return view('dosen.logbook.bulanan-genap',[
+                'title'=>$title,
+                'data'=>EvaluasiGenap::where('mahasiswa_id',$mahasiswa)->latest()->paginate(10),
                 'notif'=>$this->notifAdmin->Show(),
                 'count'=>$this->notifAdmin->Count()
             ]);
@@ -181,11 +184,12 @@ class EvaluasiGenapController extends Controller
      */
     public function show($id)
     {
-        $pdf = Pdf::loadView('cetak.evaluasi-genap', [
-            'data'=>EvaluasiGenap::find($id)->first()
-        ]);
-        $pdf->setPaper('A4', 'portrait');
-        return $pdf->stream(Faker::create()->randomNumber(5, true) . '-triwulan-genap.pdf');
+        return back()->with('gagal','Sedang dalam maintenance');
+        // $pdf = Pdf::loadView('cetak.evaluasi-genap', [
+        //     'data'=>EvaluasiGenap::find($id)->first()
+        // ]);
+        // $pdf->setPaper('A4', 'portrait');
+        // return $pdf->stream(Faker::create()->randomNumber(5, true) . '-triwulan-genap.pdf');
     }
 
     /**

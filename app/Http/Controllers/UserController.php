@@ -165,7 +165,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->user->Trash($id);
+        return redirect('admin/manajemen/pengguna')->with('sukses','Data berhasil dihapus');
     }
     public function search(Request $request){
         $title = 'Pengguna';

@@ -88,7 +88,10 @@ class TugasAkhirController extends Controller
     public function store(Request $request)
     {
         $mahasiswa_id = Mahasiswa::where('user_id',Auth::user()->id)->first();
-        $file = $request->file('nama_file');
+        if ($mahasiswa_id == null) {
+            return back()->with('gagal','Lengkapi profilmu');
+        } else {
+            $file = $request->file('nama_file');
         $nama_file = $file->hashName();
         $file->move(public_path('tugas_akhir'), $nama_file);
         $this->tugasAkhir->Store([
@@ -106,6 +109,8 @@ class TugasAkhirController extends Controller
             'content'=>Auth::user()->nama.' Telah unggah Tugas Akhir'
         ]);
         return back()->with('sukses','Data berhasil ditambahkan');
+        }
+        
     }
 
     /**

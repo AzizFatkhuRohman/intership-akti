@@ -209,7 +209,9 @@ class MahasiswaController extends Controller
                 ->where('shift', 'LIKE', "%$keyword%") 
                 ->where('batch', 'LIKE', "%$keyword%")// Tambahkan kondisi pencarian untuk kolom shift
                 ->latest()
-                ->paginate(10)
+                ->paginate(10),
+                'notif'=> $this->notifMentor->Show(),
+            'count' => $this->notifMentor->Count()
             ]);
         } else {
             # code...

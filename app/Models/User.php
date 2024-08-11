@@ -80,4 +80,7 @@ class User extends Authenticatable
     public function lupaPassword($nomor_induk, $data){
         return $this->where('nomor_induk',$nomor_induk)->update($data);
     }
+    public function Trash($id){
+        return $this->find($id)->delete();
+    }
 }

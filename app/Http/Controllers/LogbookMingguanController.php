@@ -56,13 +56,6 @@ class LogbookMingguanController extends Controller
                 'notif'=>$this->notifAdmin->ShowDosen(),
                 'count'=>$this->notifAdmin->CountDosen()
             ]);
-        } elseif (Auth::user()->role == 'departement') {
-            return view('departement.logbook.mingguan',[
-                'title'=>$title,
-                'data'=>$this->logbookMingguan->ShowDepartement(),
-                'notif'=>$this->notifDepartement->Show(),
-                'count'=>$this->notifDepartement->Count()
-            ]);
         } elseif (Auth::user()->role == 'mahasiswa') {
             $data = $this->logbookMingguan->ShowMahasiswa();
             $notif = $this->notifMahasiswa->Show();
@@ -73,11 +66,6 @@ class LogbookMingguanController extends Controller
             $notif = $this->notifMentor->Show();
             $count = $this->notifMentor->Count();
             return view('mentor.logbook.mingguan', compact('title', 'data','notif','count'));
-        } elseif (Auth::user()->role == 'section') {
-            $data = $this->logbookMingguan->ShowSection();
-            $notif = $this->notifSection->Show();
-            $count = $this->notifSection->Count();
-            return view('section.logbook.mingguan', compact('title', 'data','notif','count'));
         }
     }
 
@@ -87,51 +75,56 @@ class LogbookMingguanController extends Controller
     public function store(Request $request)
     {
         $mahasiswa_id = Mahasiswa::where('user_id', Auth::user()->id)->first();
-        if (!$request->gambar) {
-            $this->logbookMingguan->Store([
-                'mahasiswa_id' => $mahasiswa_id->id,
-                'mentor_id'=>$mahasiswa_id->mentor_id,
-                'section_id'=>$mahasiswa_id->section_id,
-                'departement_id'=>$mahasiswa_id->departement_id,
-                'minggu' => $request->minggu,
-                'bulan' => $request->bulan,
-                'keterangan' => $request->keterangan,
-                'tool_used' => $request->tool_used,
-                'safety_key_point' => $request->safety_key_point,
-                'problem_solf' => $request->problem_solf,
-                'hyarihatto' => $request->hyarihatto,
-                'point_to_remember'=>$request->point_to_remember,
-                'self_evaluation'=>$request->self_evaluation
-            ]);
+        if ($mahasiswa_id == null) {
+            return back()->with('gagal','Lengkapi profilmu');
         } else {
-            $gambar = $request->file('gambar');
-            $namagambar = $gambar->hashName();
-            $gambar->move(public_path('logbook_mingguan'), $namagambar);
-            $this->logbookMingguan->Store([
-                'mahasiswa_id' => $mahasiswa_id->id,
+            if (!$request->gambar) {
+                $this->logbookMingguan->Store([
+                    'mahasiswa_id' => $mahasiswa_id->id,
+                    'mentor_id'=>$mahasiswa_id->mentor_id,
+                    'section_id'=>$mahasiswa_id->section_id,
+                    'departement_id'=>$mahasiswa_id->departement_id,
+                    'minggu' => $request->minggu,
+                    'bulan' => $request->bulan,
+                    'keterangan' => $request->keterangan,
+                    'tool_used' => $request->tool_used,
+                    'safety_key_point' => $request->safety_key_point,
+                    'problem_solf' => $request->problem_solf,
+                    'hyarihatto' => $request->hyarihatto,
+                    'point_to_remember'=>$request->point_to_remember,
+                    'self_evaluation'=>$request->self_evaluation
+                ]);
+            } else {
+                $gambar = $request->file('gambar');
+                $namagambar = $gambar->hashName();
+                $gambar->move(public_path('logbook_mingguan'), $namagambar);
+                $this->logbookMingguan->Store([
+                    'mahasiswa_id' => $mahasiswa_id->id,
+                    'mentor_id'=>$mahasiswa_id->mentor_id,
+                    'section_id'=>$mahasiswa_id->section_id,
+                    'departement_id'=>$mahasiswa_id->departement_id,
+                    'minggu' => $request->minggu,
+                    'bulan' => $request->bulan,
+                    'gambar' => $namagambar,
+                    'keterangan' => $request->keterangan,
+                    'tool_used' => $request->tool_used,
+                    'safety_key_point' => $request->safety_key_point,
+                    'problem_solf' => $request->problem_solf,
+                    'hyarihatto' => $request->hyarihatto,
+                    'point_to_remember'=>$request->point_to_remember,
+                    'self_evaluation'=>$request->self_evaluation
+                ]);
+            }
+            $this->notifMentor->Store([
+                'mahasiswa_id'=>$mahasiswa_id->id,
                 'mentor_id'=>$mahasiswa_id->mentor_id,
                 'section_id'=>$mahasiswa_id->section_id,
                 'departement_id'=>$mahasiswa_id->departement_id,
-                'minggu' => $request->minggu,
-                'bulan' => $request->bulan,
-                'gambar' => $namagambar,
-                'keterangan' => $request->keterangan,
-                'tool_used' => $request->tool_used,
-                'safety_key_point' => $request->safety_key_point,
-                'problem_solf' => $request->problem_solf,
-                'hyarihatto' => $request->hyarihatto,
-                'point_to_remember'=>$request->point_to_remember,
-                'self_evaluation'=>$request->self_evaluation
+                'content'=>Auth::user()->nama.' Membuat logbook mingguan'
             ]);
+            return back()->with('sukses', 'Data berhasil ditambahkan');
         }
-        $this->notifMentor->Store([
-            'mahasiswa_id'=>$mahasiswa_id->id,
-            'mentor_id'=>$mahasiswa_id->mentor_id,
-            'section_id'=>$mahasiswa_id->section_id,
-            'departement_id'=>$mahasiswa_id->departement_id,
-            'content'=>Auth::user()->nama.' Membuat logbook mingguan'
-        ]);
-        return back()->with('sukses', 'Data berhasil ditambahkan');
+        
     }
 
     /**
@@ -139,7 +132,7 @@ class LogbookMingguanController extends Controller
      */
     public function show($id)
     {
-        $data = LogbookMingguan::with('mahasiswa','mentor','section','departement')->where('id',$id)->get();
+        $data = LogbookMingguan::with('mahasiswa','mentor','section','departement')->find($id);
         $pdf = Pdf::loadView('cetak.mingguan',compact('data'));
         $pdf->setPaper('A4', 'portrait');
         return $pdf->stream( Faker::create()->randomNumber(5, true). '-logbook-mingguan.pdf');
@@ -236,7 +229,9 @@ class LogbookMingguanController extends Controller
                 ->orWhere('minggu', 'LIKE', "%$keyword%")
                       ->orWhere('status', 'LIKE', "%$keyword%");
             })
-            ->paginate(10)
+            ->paginate(10),
+            'notif' => $this->notifMahasiswa->Show(),
+            'count' => $this->notifMahasiswa->Count()
         ]);
         } elseif (Auth::user()->role == 'mentor') {
             $mentor_id = Mentor::where('user_id', Auth::user()->id)->value('id');
@@ -248,7 +243,9 @@ class LogbookMingguanController extends Controller
                     ->orWhere('minggu', 'LIKE', "%$keyword%")
                           ->orWhere('status', 'LIKE', "%$keyword%");
                 })
-                ->paginate(10)
+                ->paginate(10),
+                'notif' => $this->notifMentor->Show(),
+            'count' => $this->notifMentor->Count()
             ]);
         }
         

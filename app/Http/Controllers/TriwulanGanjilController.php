@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\TriwulanBulan;
 use App\Exports\TriwulanMinggu;
 use App\Exports\TriwulanTahun;
+use App\Models\Absensi;
 use App\Models\Mahasiswa;
 use App\Models\Mentor;
 use App\Models\NotifAdmin;
@@ -113,7 +114,7 @@ class TriwulanGanjilController extends Controller
             'remarks_cost' => $request->remarks_cost,
             'remarks_moral' => $request->remarks_moral,
             'remarks_lima_r' => $request->remarks_lima_r,
-            'range' => $request->range,
+            'range' => $request->actual_lima_r+$request->actual_moral+$request->actual_cost+$request->actual_productivity+$request->actual_quality+$request->actual_safety,
             'strong' => $request->strong,
             'weakness' => $request->weakness,
             'skill' => $request->skill,
@@ -145,8 +146,14 @@ class TriwulanGanjilController extends Controller
      */
     public function show($id)
     {
-        $data = TriwulanGanjil::with('mahasiswa','mentor','section','departement')->find($id)->first();
-        $pdf = Pdf::loadView('cetak.triwulan-ganjil', compact('data'));
+        $data = TriwulanGanjil::with('mahasiswa','mentor','section','departement')->find($id);
+        $datang_terlambat = Absensi::where('keterangan','datang_terlambat')->where('mahasiswa_id',$data->mahasiswa_id)->count();
+        $sakit_opname = Absensi::where('keterangan','sakit_opname')->where('mahasiswa_id',$data->mahasiswa_id)->count();
+        $sakit_cd = Absensi::where('keterangan','sakit_cd')->where('mahasiswa_id',$data->mahasiswa_id)->count();
+        $pulang_cepat = Absensi::where('keterangan','pulang_cepat')->where('mahasiswa_id',$data->mahasiswa_id)->count();
+        $tanpa_izin = Absensi::where('keterangan','pulang_cepat')->where('status','pending')->where('mahasiswa_id',$data->mahasiswa_id)->count();
+        $tidak_hadir = Absensi::where('keterangan','tidak_hadir')->where('mahasiswa_id',$data->mahasiswa_id)->count();
+        $pdf = Pdf::loadView('cetak.triwulan-ganjil', compact('data','datang_terlambat','sakit_opname','sakit_cd','pulang_cepat','tanpa_izin','tidak_hadir'));
         $pdf->setPaper('A4', 'portrait');
         return $pdf->stream(Faker::create()->randomNumber(5, true) . '-triwulan-ganjil.pdf');
     }
@@ -179,7 +186,7 @@ class TriwulanGanjilController extends Controller
                 'remarks_cost' => $request->remarks_cost,
                 'remarks_moral' => $request->remarks_moral,
                 'remarks_lima_r' => $request->remarks_lima_r,
-                'range' => $request->range,
+                'range' => $request->actual_lima_r+$request->actual_moral+$request->actual_cost+$request->actual_productivity+$request->actual_quality+$request->actual_safety,
                 'strong' => $request->strong,
                 'weakness' => $request->weakness,
                 'skill' => $request->skill,

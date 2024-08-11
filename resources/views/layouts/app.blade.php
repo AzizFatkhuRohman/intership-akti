@@ -15,6 +15,16 @@
     });
         </script>
         @endif
+        @if (session('gagal'))
+        <script>
+            Swal.fire({
+        title: 'Error',
+        text: '{{ session('gagal') }}',
+        icon: 'error',
+        confirmButtonText: 'OK'
+    });
+        </script>
+        @endif
         @yield('main')
         @include('layouts.foot')
     </div>

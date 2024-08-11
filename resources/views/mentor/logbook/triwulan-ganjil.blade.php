@@ -102,11 +102,7 @@
                                         <input type="text" class="form-control" id="exampleFormControlInput1"
                                             name="remarks_lima_r" required>
                                     </div>
-                                    <div class="col-6">
-                                        <label for="exampleFormControlInput1" class="form-label">Range</label>
-                                        <input type="text" class="form-control" id="exampleFormControlInput1"
-                                            name="range" required>
-                                    </div>
+                                    
                                     <div class="col-6">
                                         <label for="exampleFormControlInput1" class="form-label">Strong</label>
                                         <input type="text" class="form-control" id="exampleFormControlInput1"
@@ -350,13 +346,7 @@
                                                                 value="{{$item->remarks_lima_r}}" name="remarks_lima_r"
                                                                 required>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <label for="exampleFormControlInput1"
-                                                                class="form-label">Range</label>
-                                                            <input type="text" class="form-control"
-                                                                id="exampleFormControlInput1" value="{{$item->range}}"
-                                                                name="range" required>
-                                                        </div>
+                                                        
                                                         <div class="col-6">
                                                             <label for="exampleFormControlInput1"
                                                                 class="form-label">Strong</label>
